@@ -1,0 +1,9 @@
+Students are provided with the StringMaker and StringMakerTest files. 
+
+1. They are required to push a screenshot of StringMakerTest sucessfully passing all tests to gitlab.
+	Look into example lab1.jpg file.
+
+2. Solve one of the problems from "problem" folder : either "Backspace.java" or "Reverse.java"
+	Compile your code.
+	Run Tester file
+
