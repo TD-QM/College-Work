@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","u":"allclasses-index.html"},{"p":"org.nbicocchi.oopinheritance.motorbike","l":"Motorbike"},{"p":"org.nbicocchi.oopinheritance.motorbike","l":"MotorbikeSold"},{"p":"org.nbicocchi.oopinheritance.motorbike","l":"TestApp"}];updateSearchResults();
