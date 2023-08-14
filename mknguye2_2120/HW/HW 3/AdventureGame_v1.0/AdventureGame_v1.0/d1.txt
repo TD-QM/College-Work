@@ -1,0 +1,12 @@
+13 10
+11 8
+T T T T T T T T T T T T T
+T . T . . . . . . . . . T
+T . T . T T T . T T . . T
+T . T . T . T . T T . . T
+T . . . T T T . T T T . T
+T T T . T T T . T T . . T
+T T T . T . . . . . . . T
+T T T . T . . . . T . . T
+T . . . T T T T T T . . T
+T T T T T T T T T T T T T
