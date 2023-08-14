@@ -1,8 +1,11 @@
-import org.junit.jupiter.api.*;
+<<<<<<< HEAD
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+=======
+>>>>>>> f8866c691fc61468aad6b964568551d19f7f72a8
 import static org.junit.Assert.*;
+import org.junit.*;
 
 public class DieTester {
 
@@ -22,7 +25,7 @@ public class DieTester {
      * @see Die#Die()
      * @see Die#Die(int)
      */
-    @BeforeEach
+    @Before
     public void setup(){
         defaultDie = new Die();
         fiveSidedDie = new Die(5);
@@ -137,8 +140,5 @@ public class DieTester {
     public void test5SideToString(){
         assertEquals("Num sides 5 result 1", fiveSidedDie.toString());
     }
-
-
-
 
 }

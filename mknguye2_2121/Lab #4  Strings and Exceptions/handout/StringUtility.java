@@ -2,9 +2,9 @@ public class StringUtility {
 
     /**
      *
-     * This method takes in a sentence as a parameter and returns the reverse of the sentence by word.
-     *      For this particular problem, we will convert all our sentences to lowercase. The result
-     *      should only return the strings separated by a single space, although the input may
+     * This method takes in a sentence as a parameter and returns the reverse of the sentence by word. 
+     *      For this particular problem, we will convert all our sentences to lowercase. The result 
+     *      should only return the strings separated by a single space, although the input may 
      *      contain multiple spaces in between them.
      *
      * <br>
@@ -19,7 +19,6 @@ public class StringUtility {
      * @return Reverse of the given statement
      */
     public static String reverse(String sentence) {
-        sentence = sentence.trim();
         sentence = sentence.toLowerCase() + " ";
         System.out.println(sentence);
         String newString = "";
@@ -42,15 +41,15 @@ public class StringUtility {
             }
         }
 
-        newString = newString.trim();
+        newString = newString.substring(0, newString.length() - 1);
 
         return newString;
     }
 
 
     /**
-     * This method takes a sentence and counts the max occurring character.
-     *      It ignores all the spaces, punctuations, digits and converts all
+     * This method takes a sentence and counts the max occurring character. 
+     *      It ignores all the spaces, punctuations, digits and converts all 
      *      the uppercase to lowercase letters.
      *
      * Example:
@@ -77,7 +76,7 @@ public class StringUtility {
         int tempMaxCounter = 0;
         char trueMax = sentence.charAt(0);
         int trueMaxCounter = 0;
-
+        
         // Loop through each character in the string
         for(int i = 0; i < sentence.length(); i++){
 
@@ -108,9 +107,9 @@ public class StringUtility {
     }
 
     /**
-     * This method checks whether the given string is a palindrome or not.
-     *      A palindrome is a word, number, phrase, or other sequences of
-     *      characters that read the same backward as forward, such as madam
+     * This method checks whether the given string is a palindrome or not. 
+     *      A palindrome is a word, number, phrase, or other sequences of 
+     *      characters that read the same backward as forward, such as madam 
      *      or racecar. An empty string is considered to be a palindrome.
      *
      * @param input The string to check
