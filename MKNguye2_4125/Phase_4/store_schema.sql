@@ -1,7 +1,7 @@
 DROP TABLE Review;
 DROP TABLE LineItem;
 DROP TABLE Address;
-DROP TABLE Order;
+DROP TABLE Orders;
 DROP TABLE Product;
 DROP TABLE Customer;
 
