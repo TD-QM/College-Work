@@ -14,7 +14,7 @@ CREATE TABLE Customer (
     CONSTRAINT C_CustomerFK FOREIGN KEY (C_Referrer) REFERENCES Customer(C_ID)
 );
 
-CREATE TABLE Product{
+CREATE TABLE Product {
     P_ID CHAR,
     P_Name VARCHAR(20),
     P_Price NUMBER(6,2),

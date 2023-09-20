@@ -1,4 +1,5 @@
 import java.io.*;
+import java.text.StringCharacterIterator;
 import java.util.*;
 
 public class Main{
@@ -41,6 +42,12 @@ public class Main{
                                     output[index] = value;   // This is only called if both checks for the integer and float fail
                                                                                 // Since we can assume that if it isn't an int or a float, it's a string, we don't need any checks
                                 } else {
+                                    for(int i = 0; i < value.length()-1; i++){
+                                        if(value.substring(i, i+1).equals("'")){
+                                            value = value.substring(0, i+1) + "'" + value.substring(i+1);
+                                            i++;
+                                        }
+                                    }
                                     output[index] = "'" + value + "'";
                                 }
                             }
