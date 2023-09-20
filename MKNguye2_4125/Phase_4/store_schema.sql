@@ -21,7 +21,7 @@ CREATE TABLE Product (
     CONSTRAINT ProductPK PRIMARY KEY (P_ID)
 );
 
-CREATE TABLE Order(
+CREATE TABLE Orders(
     O_Number CHAR,
     O_Date DATE,
     O_Cust CHAR,
