@@ -49,7 +49,7 @@ CREATE TABLE Review(
     R_Product CHAR(3),
     R_Number NUMBER,
     R_Rating NUMBER,
-    R_Text VARCHAR2(100),
+    R_Text VARCHAR2(300),
     CONSTRAINT ReviewPK PRIMARY KEY (R_Product, R_Number),
     CONSTRAINT R_ProductFK FOREIGN KEY (R_Product) REFERENCES Product(P_ID)
 );
