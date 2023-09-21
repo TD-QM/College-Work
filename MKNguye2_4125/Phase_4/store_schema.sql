@@ -16,7 +16,7 @@ CREATE TABLE Customer (
 
 CREATE TABLE Product (
     P_ID CHAR(3),
-    P_Name VARCHAR(20),
+    P_Name VARCHAR(100),
     P_Price NUMBER(6,2),
     CONSTRAINT ProductPK PRIMARY KEY (P_ID)
 );
@@ -37,11 +37,11 @@ CREATE TABLE Address(
 );
 
 CREATE TABLE LineItem(
-    L_Cust CHAR(3),
+    L_Order CHAR(5),
     L_Product CHAR(3),
     L_Quantity NUMBER,
-    CONSTRAINT LineItemPK PRIMARY KEY (L_Cust, L_Product),
-    CONSTRAINT L_CustomerFK FOREIGN KEY (L_Cust) REFERENCES Customer(C_ID),
+    CONSTRAINT LineItemPK PRIMARY KEY (L_Order, L_Product),
+    CONSTRAINT L_OrderFK FOREIGN KEY (L_Order) REFERENCES Orders(O_Number),
     CONSTRAINT L_ProductFK FOREIGN KEY (L_Product) REFERENCES Product(P_ID)
 );
 
@@ -49,7 +49,7 @@ CREATE TABLE Review(
     R_Product CHAR(3),
     R_Number NUMBER,
     R_Rating NUMBER,
-    R_Text VARCHAR2(300),
+    R_Text VARCHAR2(500),
     CONSTRAINT ReviewPK PRIMARY KEY (R_Product, R_Number),
     CONSTRAINT R_ProductFK FOREIGN KEY (R_Product) REFERENCES Product(P_ID)
 );
