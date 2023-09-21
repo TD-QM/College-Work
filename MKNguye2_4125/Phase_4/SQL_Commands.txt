@@ -1,0 +1,7 @@
+@'C:\Users\mknguye2\Source\College-Work\MKNguye2_4125\Phase_4\store_schema.sql'
+@'C:\Users\mknguye2\Source\College-Work\MKNguye2_4125\Phase_4\customer.sql'
+@'C:\Users\mknguye2\Source\College-Work\MKNguye2_4125\Phase_4\product.sql'
+@'C:\Users\mknguye2\Source\College-Work\MKNguye2_4125\Phase_4\orders.sql'
+@'C:\Users\mknguye2\Source\College-Work\MKNguye2_4125\Phase_4\address.sql'
+@'C:\Users\mknguye2\Source\College-Work\MKNguye2_4125\Phase_4\lineitem.sql'
+@'C:\Users\mknguye2\Source\College-Work\MKNguye2_4125\Phase_4\review.sql'
