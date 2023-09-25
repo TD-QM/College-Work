@@ -62,6 +62,8 @@ public class Main{
                 }
             }
 
+            outfile.write("commit;");
+
             // Close both streams
             outfile.close();
             input.close();
