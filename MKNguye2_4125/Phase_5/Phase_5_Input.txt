@@ -1,0 +1,6 @@
+SELECT * FROM Product WHERE P_Price < 100;
+SELECT * FROM Customer WHERE Referrer IS NULL;
+SELECT AVG(R_Rating) AS 'Average Rating' FROM Review;
+SELECT * FROM Product WHERE P_Name Like '%Ticket' ORDER BY P_Price;
+SELECT MIN(C_DOB), MAX(C_DOB) FROM Customer;
+SELECT * FROM Review WHERE R_Text LIKE upper('%great%');
