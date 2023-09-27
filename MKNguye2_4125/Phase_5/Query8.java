@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main{
+public class Query8{
     public static void main(String[] args) throws FileNotFoundException{
 
         File infile = new File(String.format("product.txt")); // Object that acts as the input file
