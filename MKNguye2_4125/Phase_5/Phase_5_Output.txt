@@ -1,0 +1,77 @@
+
+P_I P_NAME                                                                                                  P_PRICE
+--- ---------------------------------------------------------------------------------------------------- ----------
+P01 Taylor Swift Ticket                                                                                      199.99
+P07 Lizzo Ticket                                                                                             150.99
+
+
+C_I C_NAME               C_DOB     C_R
+--- -------------------- --------- ---
+C01 Will Smith           07-JAN-72    
+C02 Margot Robbie        14-APR-92    
+C04 Dwayne Johnson       09-MAY-70    
+C06 Tom Hanks            20-DEC-60    
+C08 Gal Gadot            06-JUL-86    
+C09 Will Ferrell         28-JUN-62    
+C11 Jamie Foxx           21-JUL-74    
+C13 Rami Malek           12-MAR-88    
+C15 Adam Driver          04-FEB-85    
+C18 Salma Hayek          29-MAR-65    
+
+10 rows selected. 
+
+
+Average Rating
+--------------
+          4.25
+
+
+P_I P_NAME                                                                                                  P_PRICE
+--- ---------------------------------------------------------------------------------------------------- ----------
+P17 Jazz at the Sandbar Ticket                                                                                    0
+P14 Streetcar Ticket                                                                                           2.25
+P15 Audubon Zoo Ticket                                                                                        29.99
+P06 Harry Styles Ticket                                                                                       65.99
+P20 Saints Ticket                                                                                             89.45
+P12 Jazz Fest Ticket                                                                                             95
+P07 Lizzo Ticket                                                                                             150.99
+P01 Taylor Swift Ticket                                                                                      199.99
+
+8 rows selected. 
+
+
+Min DoB   Max DoB  
+--------- ---------
+20-DEC-60 14-APR-92
+
+
+R_P   R_NUMBER   R_RATING R_TEXT                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+--- ---------- ---------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+P02          2          5 It's a great book for college level database courses.                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+P02          4          5 Great book. Refined and improved.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+P03          3          5 The mix is great. Have bought it many times either online or straight from Cafe' Du Monde. Love the cafe.                                                                                                                                                                                                                                                                                                                                                                                                           
+P05          5          5 This is the best Louisiana style hot sauce ever great price large bottles don’t even think about it so good                                                                                                                                                                                                                                                                                                                                                                                                      
+
+
+  COUNT(*)
+----------
+         3
+
+
+P_NAME                                                                                              
+----------------------------------------------------------------------------------------------------
+Taylor Swift Ticket
+
+
+P_NAME                                                                                              
+----------------------------------------------------------------------------------------------------
+Taylor Swift Ticket
+Database Textbook
+Harry Styles Ticket
+Lizzo Ticket
+Alvin Kamara Jersey
+Jazz Fest Ticket
+Saints Ticket
+
+7 rows selected. 
+
