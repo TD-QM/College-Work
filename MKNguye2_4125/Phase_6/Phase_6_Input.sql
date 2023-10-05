@@ -1,6 +1,6 @@
 SELECT DISTINCT C_Name FROM Customer, Address WHERE C_ID = A_CUST;
 
-SELECT P_ID, L_Quantity FROM Product, LineItem WHERE P_ID = L_Product;
+SELECT P_ID, SUM(L_Quantity) FROM Product, LineItem WHERE P_ID = L_Product GROUP BY L_Product ORDER BY P_ID;
 
 SELECT P_Name FROM Product LEFT OUTER JOIN Review ON P_ID = R_Product WHERE R_Number IS NULL;
 

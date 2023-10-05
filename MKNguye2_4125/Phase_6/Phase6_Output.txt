@@ -1,0 +1,76 @@
+
+C_NAME              
+--------------------
+Will Smith
+Margot Robbie
+Ryan Gosling
+Dwayne Johnson
+Tom Hanks
+Idris Elba
+Gal Gadot
+Will Ferrell
+
+8 rows selected. 
+
+
+P_I SUM(L_QUANTITY)
+--- ---------------
+P01              25
+P02              37
+P03              34
+P04              13
+P05             227
+P06              10
+P07              34
+P08              11
+P09              20
+P10              17
+P11              25
+
+P_I SUM(L_QUANTITY)
+--- ---------------
+P12              10
+P13              10
+P14              15
+P15              25
+P16              36
+P17              25
+P18              69
+P19              48
+P20             106
+
+20 rows selected. 
+
+
+P_NAME                                                                                              
+----------------------------------------------------------------------------------------------------
+Pralines
+Jazz Fest Ticket
+1 Dozen Oysters
+Audubon Zoo Ticket
+Tony Chachere's
+Coffee
+Jazz at the Sandbar Ticket
+Harry Styles Ticket
+Alvin Kamara Jersey
+Streetcar Ticket
+Snoball
+
+P_NAME                                                                                              
+----------------------------------------------------------------------------------------------------
+Taylor Swift Ticket
+1 lb of Crawfish
+1 lb of Boudin
+Frozen Coffee
+Saints Ticket
+Lizzo Ticket
+
+17 rows selected. 
+
+
+C_NAME              
+--------------------
+Ryan Gosling
+Idris Elba
+Chris Evans
+
