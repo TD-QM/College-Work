@@ -1,0 +1,6 @@
+SELECT P_ID, P_Name, SUM(L_Quantity) AS Total_Quantity FROM Product, LineItem WHERE P_ID = L_Product GROUP BY P_ID, P_Name HAVING SUM(L_Quantity) > 30 ORDER BY P_ID;
+
+SELECT * FROM Customer WHERE C_Referrer IN (SELECT C_ID FROM Customer WHERE C_Referrer = 'C15');
+
+SELECT * FROM Customer, LineItem, Orders WHERE C_ID = O_Cust AND O_Number = L_Order AND L_Product = (SELECT P_ID FROM Product WHERE P_Price = (SELECT MIN(P_Price) FROM Product));
+
