@@ -1,0 +1,92 @@
+
+P_I P_NAME                                             TOTAL_QUANTITY
+--- -------------------------------------------------- --------------
+P02 Database Textbook                                              37
+P03 Beignet Mix                                                    34
+P05 Crystal Hot Sauce                                             227
+P07 Lizzo Ticket                                                   34
+P16 1 Dozen Oysters                                                36
+P18 Snoball                                                        69
+P19 Frozen Coffee                                                  48
+P20 Saints Ticket                                                 106
+
+8 rows selected. 
+
+
+C_I C_NAME               C_DOB     C_R
+--- -------------------- --------- ---
+C20 Ewan McGregor        23-DEC-73 C17
+
+
+C_I C_NAME              
+--- --------------------
+C03 Ryan Gosling        
+C05 Emma Stone          
+C01 Will Smith          
+C20 Ewan McGregor       
+C12 Tom Hardy           
+C08 Gal Gadot           
+C07 Idris Elba          
+
+7 rows selected. 
+
+
+P_I P_NAME                                             AVG(R_RATING)
+--- -------------------------------------------------- -------------
+P02 Database Textbook                                           4.75
+P03 Beignet Mix                                                    5
+P05 Crystal Hot Sauce                                            3.4
+
+
+View TOTALPRODUCTCOST dropped.
+
+
+View TOTALPRODUCTCOST created.
+
+
+O_NUM TOTAL_COST
+----- ----------
+O0006    1034.04
+O0008    1469.85
+O0011     1771.4
+O0012    1932.86
+O0016    1809.26
+O0020       1204
+O0028    2836.69
+O0033    3774.75
+O0041    6708.75
+
+9 rows selected. 
+
+
+View TOTALORDERCOST dropped.
+
+
+View TOTALORDERCOST created.
+
+
+C_I C_NAME               TOTAL_ORDER_COST
+--- -------------------- ----------------
+C01 Will Smith                     8812.5
+C02 Margot Robbie                 1548.81
+C03 Ryan Gosling                  1331.63
+C04 Dwayne Johnson                1191.76
+C05 Emma Stone                     1787.4
+C06 Tom Hanks                     3794.75
+C08 Gal Gadot                     1288.58
+C09 Will Ferrell                  1209.99
+C17 Miles Teller                  2779.86
+C20 Ewan McGregor                 2876.65
+
+10 rows selected. 
+
+
+  COUNT(*)
+----------
+         9
+
+
+C_I C_NAME               C_DOB     C_R
+--- -------------------- --------- ---
+C07 Idris Elba           02-NOV-75 C02
+
