@@ -16,7 +16,7 @@ CREATE TABLE Customer (
 
 CREATE TABLE Product (
     P_ID CHAR(3),
-    P_Name VARCHAR(100),
+    P_Name VARCHAR(50),
     P_Price NUMBER(6,2),
     CONSTRAINT ProductPK PRIMARY KEY (P_ID)
 );
