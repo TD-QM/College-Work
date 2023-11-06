@@ -26,7 +26,7 @@ def printBoard(board, length, width):
     
     return output
 
-def makeBoard(board, length, width):
+def makeBoard(board, length, width, seed):
     iter = 0
     totalLength = length*width
     valid = False
@@ -36,6 +36,7 @@ def makeBoard(board, length, width):
     
     i = 0
     while(i < totalLength):
+        random.seed(seed[i])
         random.shuffle(numList[i])
         #print("New numList: " + str(numList))
         
@@ -75,7 +76,7 @@ def makeBoard(board, length, width):
             display += "(x,y): (" + str(j) + "," + str(i) + ")\n"
             display += "Board: \n"
             display += printBoard(board, length, width) + "\n"
-            #time.sleep(0.025)
+            time.sleep(0.03)
             os.system("cls")
             print(display)
             
@@ -118,12 +119,15 @@ def checkCell(board, length, width, y, x, input):
 length = int(sys.argv[1])
 width = int(sys.argv[2])
 area = length*width
-
+seed = int(sys.argv[3])
 
 board = [[0 for i in range(area)] for i in range(area)]
+seedList = [(a+1) for a in range(9999)]
+random.seed(seed)
+random.shuffle(seedList)
 
 tic = time.perf_counter()
-makeBoard(board, length, width)
+makeBoard(board, length, width, seedList)
 #printBoard(board, length, width)
 toc = time.perf_counter()
 print("Ran for " + str((toc - tic)) + " seconds")
