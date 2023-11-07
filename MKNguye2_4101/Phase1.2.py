@@ -70,14 +70,16 @@ def makeBoard(board, length, width):
                     invalidList[r][c].append(board[r][c])
                     board[r][c] = 0
             
+            if iter % 10000000 == 0:
+                toc = time.perf_counter()
+                print(str(length) + "x" + str(width) + ", Iter #" + str(iter) + ", " + str(toc - tic) + " seconds")
+            
             c += 1
             if not valid:
                 c -= 1
         if not valid:
             r -= 1
         r += 1
-    toc = time.perf_counter()
-    print("Ran for " + str((toc - tic)) + " seconds")
                     
                     
     
@@ -110,23 +112,41 @@ def checkCell(board, length, width, y, x, input):
 
 length = int(sys.argv[1])
 width = int(sys.argv[2])
-area = length*width
 
 
-dirName = "/" + str(length) + "x" + str(width) + "Boards/"
-try:
-    os.mkdir(dirName)
-except OSError as error:
-    pass
 
-for i in range(1, int(sys.argv[3])+1 ):
-    file = open("./Boards" + dirName + str(length) + "x" + str(width) + "Board" + str(i) + ".txt", "w")
-    board = [[0 for j in range(area)] for j in range(area)]
-    tic = time.perf_counter()
-    makeBoard(board, length, width)
-    file.write( boardToString(board, length, width) )
-    toc = time.perf_counter()
-    print("Ran for " + str((toc - tic)) + " seconds")
+while length < 11:
+    width = length
+    while width < 11:
+        dirName = "./Boards/" + str(length) + "x" + str(width) + "Boards/"
+        try:
+            os.mkdir(dirName)
+        except OSError as error:
+            pass
+        timeFileName = dirName + "TimeFile.txt"
+        timeFile = open(timeFileName, "w")
+        timeFile.write("")
+
+        for i in range(1, length*width*10):
+            boardName = dirName + str(length) + "x" + str(width) + "Board" + str(i) + ".txt"
+            timeFileName = dirName + "TimeFile.txt"
+
+            file = open(boardName, "w")
+            timeFile = open(timeFileName, "a")
+
+            board = [[0 for j in range(length*width)] for j in range(length*width)]
+
+            tic = time.perf_counter()
+
+            makeBoard(board, length, width)
+            file.write( boardToString(board, length, width) )
+
+            toc = time.perf_counter()
+
+            timeFile.write(str(toc - tic) + "\n")
+            
+        width += 1
+    length += 1
 
 
 #makeBoard(board)
