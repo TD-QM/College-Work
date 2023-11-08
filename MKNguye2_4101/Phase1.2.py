@@ -73,6 +73,8 @@ def makeBoard(board, length, width):
             if iter % 10000000 == 0:
                 toc = time.perf_counter()
                 print(str(length) + "x" + str(width) + ", Iter #" + str(iter) + ", " + str(toc - tic) + " seconds")
+                if toc-tic > length*width*60:
+                    return ""
             
             c += 1
             if not valid:
@@ -112,11 +114,12 @@ def checkCell(board, length, width, y, x, input):
 
 length = int(sys.argv[1])
 width = int(sys.argv[2])
-
+start = True
 
 
 while length < 11:
-    width = length
+    if not start:
+        width = length
     while width < 11:
         dirName = "./Boards/" + str(length) + "x" + str(width) + "Boards/"
         try:
@@ -138,14 +141,15 @@ while length < 11:
 
             tic = time.perf_counter()
 
-            makeBoard(board, length, width)
-            file.write( boardToString(board, length, width) )
-
-            toc = time.perf_counter()
-
-            timeFile.write(str(toc - tic) + "\n")
+            if not makeBoard(board, length, width) == 0:
+                file.write( boardToString(board, length, width) )
+                toc = time.perf_counter()
+                timeFile.write(str(toc - tic) + "\n")
+            else:
+                i -= 1
             
         width += 1
+    start = False
     length += 1
 
 
