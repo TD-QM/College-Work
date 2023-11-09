@@ -5,6 +5,8 @@ Attempts to put the problem into polynomial time by swapping around the rows and
 While it does work, issues arise in the realm of variance as there's a set pattern for each board generated
     This can be remedied by having multiple base boards to generate off of, but there still exists a relatively finite set of these patterns
     Regular sudoku also has a finite set of patterns, but compared to the finite sets of this method, it's infinite
+    
+Also the first instance of the boardToString method actually fucking working properly
 '''
 
 import sys, math, random, time, os
