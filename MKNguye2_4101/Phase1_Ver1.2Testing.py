@@ -54,7 +54,7 @@ def boardToTxtFormat(board, length, width):
 
 
 # Generates a board with a specified length and width of the inner boards
-def makeBoard(board, length, width):
+def makeBoard(board, length, width, num):
     tic = time.perf_counter()
     iter = 0
     totalLength = length*width
@@ -96,15 +96,22 @@ def makeBoard(board, length, width):
                     invalidList[r][c].append(board[r][c])
                     board[r][c] = 0
             
+            toc = time.perf_counter()
+            if (toc - tic) > (1.21 ** (length*width)):
+                return 0
+            
             c += 1
             if not valid:
                 c -= 1
         if not valid:
             r -= 1
         r += 1
+
     toc = time.perf_counter()
+    print("Board" + str(length) + "x" + str(width) + "#" + str(num))
     print("Total Iterations: " + str(iter))
     print("Ran for " + str((toc - tic)) + " seconds")
+    return 1
                     
                     
     
@@ -137,32 +144,46 @@ def checkCell(board, length, width, y, x, input):
 
 length = int(sys.argv[1])
 width = int(sys.argv[2])
-numBoards = int(sys.argv[3]) + 1
-area = length*width
+start = True
 
 
-dirName = "./Boards/" + str(length) + "x" + str(width) + "Boards/"
-try:
-    os.mkdir(dirName)
-except OSError as error:
-    pass
+while length < 6:
+    if not start:
+        width = length
+    while width < 6:
+        dirName = "./Boards/" + str(length) + "x" + str(width) + "Boards/"
+        try:
+            os.mkdir(dirName)
+        except OSError as error:
+            pass
+        timeFileName = dirName + "TimeFile.txt"
+        timeFile = open(timeFileName, "w")
+        timeFile.write("")
+        timeFile.close()
 
-timeFile = open(dirName + str(length) + "x" + str(width) + "TimeFile.txt", "a")
+        i = 0
+        while i < 101:
+            boardName = dirName + str(length) + "x" + str(width) + "Board" + str(i) + ".txt"
+            timeFileName = dirName + "TimeFile.txt"
 
+            file = open(boardName, "w")
+            timeFile = open(timeFileName, "a")
 
+            board = [[0 for j in range(length*width)] for j in range(length*width)]
 
-for i in range(1, numBoards):
-    boardFile = open(dirName + str(length) + "x" + str(width) + "Board" + str(i) + ".txt", "w")
-    board = [[0 for j in range(area)] for j in range(area)]
+            tic = time.perf_counter()
 
-    tic = time.perf_counter()
-    makeBoard(board, length, width)
-    boardFile.write( boardToTxtFormat(board, length, width) )
-    toc = time.perf_counter()
-
-    timeTaken = toc - tic
-    timeFile.write(str(timeTaken) + "\n")
-    print("Ran for " + str((toc - tic)) + " seconds")
-
+            if not makeBoard(board, length, width, i) == 0:
+                file.write( boardToTxtFormat(board, length, width) )
+                toc = time.perf_counter()
+                timeFile.write(str(toc - tic) + "\n")
+                i += 1
+            
+            file.close()
+            timeFile.close()
+            
+        width += 1
+    start = False
+    length += 1
 
 #makeBoard(board)
