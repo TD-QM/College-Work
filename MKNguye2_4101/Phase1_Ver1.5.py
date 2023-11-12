@@ -37,6 +37,25 @@ def boardToString(board, length, width):
     
     return output
 
+
+def boardToTxtFormat(board, length, width):
+    output = ""
+    maxDigits = int(math.log(length*width, 10)) + 1
+
+    for row in board:
+        for col in row:
+            numDigits = int(math.log(col, 10)) + 1
+            output += (" " * (maxDigits-numDigits + 1)) + str(col)
+        output += "\n"
+    
+    return output
+
+
+def boardCloning(board):
+    boardCopy = board[:]
+    return boardCopy
+
+
 def makeBaseBoard(innerLength, innerWidth, outerLength, outerWidth):
     area = innerLength * innerWidth
 
@@ -66,12 +85,11 @@ def makeBaseBoard(innerLength, innerWidth, outerLength, outerWidth):
 def randomizeBoard(board, innerLength, innerWidth, outerLength, outerWidth):
     randomizeInnerCol(board, innerLength, innerWidth, outerLength, outerWidth)
     randomizeInnerRow(board, innerLength, innerWidth, outerLength, outerWidth)
-    randomizeOuterCol(board, innerLength, innerWidth, outerLength, outerWidth)
-    randomizeOuterRow(board, innerLength, innerWidth, outerLength, outerWidth)
 
 def randomizeInnerCol(board, innerLength, innerWidth, outerLength, outerWidth):
     for outerCol in range(outerLength):
-        offset = outerCol*outerLength
+        offset = outerCol*innerLength
+
         colList = [[0 for i in range(innerWidth*outerWidth)] for i in range(innerLength)]
         
         for innerCol in range(innerLength):
@@ -84,10 +102,9 @@ def randomizeInnerCol(board, innerLength, innerWidth, outerLength, outerWidth):
             for wholeCol in range(innerLength * innerWidth):
                 board[wholeCol][offset + innerCol] = colList[innerCol][wholeCol]
     
-
 def randomizeInnerRow(board, innerLength, innerWidth, outerLength, outerWidth):
     for outerRow in range(outerWidth):
-        offset = outerRow*outerWidth
+        offset = outerRow*innerWidth
         rowList = []
         
         for innerRow in range(innerWidth):
@@ -97,26 +114,46 @@ def randomizeInnerRow(board, innerLength, innerWidth, outerLength, outerWidth):
             
         for innerRow in range(innerWidth):
             board[offset + innerRow] = rowList[innerRow]
+
+
+
+
+for innerLength in range(5, 11):
+    outerWidth = innerLength
+    for innerWidth in range(6, 11):
+        outerLength = innerWidth
+
+        dirName = "./Boards/" + str(innerLength) + "x" + str(innerWidth) + "Boards/"
+        try:
+            os.mkdir(dirName)
+        except OSError as error:
+            pass
+        timeFileName = dirName + "TimeFile.txt"
+        timeFile = open(timeFileName, "w")
+        timeFile.write("")
+        timeFile.close()
+
+        baseBoard = makeBaseBoard(innerLength, innerWidth, outerLength, outerWidth)
+
+        for boardNum in range(1, 101):
+            boardName = dirName + str(innerLength) + "x" + str(innerWidth) + "Board" + str(boardNum) + ".txt"
+            timeFileName = dirName + "TimeFile.txt"
+
+            boardFile = open(boardName, "w")
+            timeFile = open(timeFileName, "a")
+
+            boardInput = boardCloning(baseBoard)
+
+            tic = time.perf_counter()
+
+            randomizeBoard(boardInput, innerLength, innerWidth, outerLength, outerWidth)
+
+            boardFile.write( boardToTxtFormat(boardInput, innerLength, innerWidth) )
+
+            toc = time.perf_counter()
+            timeFile.write(str(toc - tic) + "\n")
             
-
-def randomizeOuterCol(board, innerLength, innerWidth, outerLength, outerWidth):
-    pass
-
-def randomizeOuterRow(board, innerLength, innerWidth, outerLength, outerWidth):
-    pass
-
-
-innerLength = int(sys.argv[1])
-innerWidth = int(sys.argv[2])
-outerLength = innerWidth
-outerWidth = innerLength
-
-board = makeBaseBoard(innerLength, innerWidth, outerLength, outerWidth)
-
-print(boardToString(board, innerLength, innerWidth))
-
-randomizeBoard(board, innerLength, innerWidth, outerLength, outerWidth)
-
-print(boardToString(board, innerLength, innerWidth))
-
-
+            boardFile.close()
+            timeFile.close()
+            
+    start = False
