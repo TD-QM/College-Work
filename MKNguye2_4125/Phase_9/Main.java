@@ -17,8 +17,8 @@ public class Main{
 
             ResultSet invoiceResults = invoiceStatement.executeQuery();
 
-            System.out.println("Product" + " ".repeat(24) + " Quantity  Price/Unit      Total");
-            System.out.println("-".repeat(64));
+            System.out.println("Product" + " ".repeat(24) + " Quantity  Price/Unit     Total");
+            System.out.println("-".repeat(63));
 
             double orderTotal = 0;
             while (invoiceResults.next()){
