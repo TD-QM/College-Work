@@ -42,16 +42,16 @@ public class Main{
             }
 
             double shippingCost = 0;
-
-            if (orderTotal < 35){
-                shippingCost = 10;
-            }
-
             double totalDue = orderTotal + shippingCost;
 
             int orderTotalDigits = (int) Math.log10(orderTotal) + 3;
-            int shippingDigits = (int) Math.log10(shippingCost) + 3;
+            int shippingDigits = 4;
             int totalDigits = (int) Math.log10(totalDue) + 3;
+
+            if (orderTotal < 35){
+                shippingCost = 10;
+                shippingDigits = 5;
+            }
 
             System.out.println();
             System.out.println("Total Product Cost :" + " ".repeat(8-orderTotalDigits) + "$" + String.format("%.2f", orderTotal));
