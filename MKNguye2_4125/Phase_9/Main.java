@@ -28,7 +28,7 @@ public class Main{
 
                 customerNameResult.next();
 
-                System.out.println(args[0] + " invoice for " + customerNameResult.getString(1) + "\n");
+                System.out.println(args[1] + " invoice for " + customerNameResult.getString(1) + "\n");
                 System.out.println("Product" + " ".repeat(24) + " Quantity  Price/Unit     Total");
                 System.out.println("-".repeat(63));
 
