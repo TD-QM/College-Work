@@ -24,7 +24,7 @@ public class Main{
             while (invoiceResults.next()){
                 String productName = invoiceResults.getString(1);
                 int productDigits = productName.length();
-                System.out.print( productName + " ".repeat(30-productDigits) );
+                System.out.print( productName + " ".repeat(31-productDigits) );
 
                 int quantity = invoiceResults.getInt(2);
                 int quantityDigits = (int) Math.log10( quantity ) + 1;
