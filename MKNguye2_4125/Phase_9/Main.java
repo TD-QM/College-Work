@@ -20,7 +20,11 @@ public class Main{
             ResultSet customerNameResult = pStateName.executeQuery();
 
             if(invoiceResults.next()){
-                invoiceResults.first();
+                invoiceString = "SELECT P_Name, L_Quantity, P_Price FROM Orders, LineItem, Product WHERE ? = O_Cust AND O_Number = L_Order AND L_Product = P_ID AND O_Date = ?";
+                invoiceStatement = conn.prepareStatement(invoiceString);
+                invoiceStatement.setString( 1, args[0] );
+                invoiceStatement.setString( 2, args[1] );
+                invoiceResults = invoiceStatement.executeQuery();
 
                 System.out.println(args[0] + " invoice for " + customerNameResult.getString(1) + "\n");
                 System.out.println("Product" + " ".repeat(24) + " Quantity  Price/Unit     Total");
