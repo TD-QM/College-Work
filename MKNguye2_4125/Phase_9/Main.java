@@ -47,10 +47,16 @@ public class Main{
                 shippingCost = 10;
             }
 
+            double totalDue = orderTotal + shippingCost;
+
+            int orderTotalDigits = (int) Math.log10(orderTotal) + 3;
+            int shippingDigits = (int) Math.log10(shippingCost) + 3;
+            int totalDigits = (int) Math.log10(totalDue) + 3;
+
             System.out.println();
-            System.out.println("Total Product Cost: " + String.format("%.2f", orderTotal));
-            System.out.println("Shipping Cost:      " + String.format("%.2f", shippingCost));
-            System.out.println("Total Due:          " + String.format("%.2f", (orderTotal+shippingCost)));
+            System.out.println("Total Product Cost :" + " ".repeat(8-orderTotalDigits) + "$" + String.format("%.2f", orderTotal));
+            System.out.println("Shipping Cost      :" + " ".repeat(8-shippingDigits) + "$" + String.format("%.2f", shippingCost));
+            System.out.println("Total Due          :" + " ".repeat(8-totalDigits) + "$" + String.format("%.2f", (orderTotal+shippingCost)));
 
             conn.close();
 
