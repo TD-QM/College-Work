@@ -70,8 +70,7 @@ public class Main{
                 System.out.println("Shipping Cost      :" + " ".repeat(8-shippingDigits) + "$" + String.format("%.2f", shippingCost));
                 System.out.println("Total Due          :" + " ".repeat(8-totalDigits) + "$" + String.format("%.2f", (orderTotal+shippingCost)));
             } else {
-                
-                
+                System.out.println("No invoice to generate");
             }
 
             conn.close();
