@@ -44,9 +44,9 @@ public class Main{
             double shippingCost = 0;
             double totalDue = orderTotal + shippingCost;
 
-            int orderTotalDigits = (int) Math.log10(orderTotal) + 3;
+            int orderTotalDigits = (int) Math.log10(orderTotal) + 4;
             int shippingDigits = 4;
-            int totalDigits = (int) Math.log10(totalDue) + 3;
+            int totalDigits = (int) Math.log10(totalDue) + 4;
 
             if (orderTotal < 35){
                 shippingCost = 10;
