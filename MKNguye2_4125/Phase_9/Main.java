@@ -8,7 +8,7 @@ public class Main{
 
             Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:Oracle21c", "MKNguye2", "TheFrenchiestFry678"); //Change these to your user/pass
 
-            String invoiceString = "SELECT L_Quantity, P_Name, P_Price FROM Orders, LineItem, Product WHERE ? = O_Cust AND O_Number = L_Order AND L_Product = P_ID AND O_Date = ?";
+            String invoiceString = "SELECT P_Name, L_Quantity, P_Price FROM Orders, LineItem, Product WHERE ? = O_Cust AND O_Number = L_Order AND L_Product = P_ID AND O_Date = ?";
 
             PreparedStatement invoiceStatement = conn.prepareStatement(invoiceString);
 
@@ -22,15 +22,16 @@ public class Main{
 
             double productTotal = 0;
             while (invoiceResults.next()){
-                String productName = invoiceResults.getString(0);
+
+                String productName = invoiceResults.getString(1);
                 int productDigits = productName.length();
                 System.out.print( productName + " ".repeat(31-productDigits) );
 
-                int quantity = invoiceResults.getInt(1);
+                int quantity = invoiceResults.getInt(2);
                 int quantityDigits = (int) Math.log10( quantity );
                 System.out.print( " ".repeat( 9 - quantityDigits+1) + quantity + "  ");
 
-                double productPrice = invoiceResults.getDouble(2);
+                double productPrice = invoiceResults.getDouble(3);
                 int priceDigits = (int) Math.log10( productPrice ) + 3;
                 System.out.print( "$" + " ".repeat(9 - priceDigits) + productPrice + "  ");
 
