@@ -24,19 +24,19 @@ public class Main{
             while (invoiceResults.next()){
                 String productName = invoiceResults.getString(1);
                 int productDigits = productName.length();
-                System.out.print( productName + " ".repeat(28-productDigits) );
+                System.out.print( productName + " ".repeat(29-productDigits) );
 
                 int quantity = invoiceResults.getInt(2);
                 int quantityDigits = (int) Math.log10( quantity );
-                System.out.print( " ".repeat( 9 - quantityDigits+1) + quantity + "  ");
+                System.out.print( " ".repeat( 8 - quantityDigits+1) + quantity + "  ");
 
                 double productPrice = invoiceResults.getDouble(3);
                 int priceDigits = (int) Math.log10( productPrice ) + 3;
-                System.out.print( "$" + " ".repeat(9 - priceDigits) + String.format("%2f", productPrice) + "  ");
+                System.out.print( "$" + " ".repeat(8 - priceDigits) + String.format("%.2f", productPrice) + "  ");
 
                 double productTotal = productPrice*quantity;
                 int totalDigits = (int) Math.log10( productTotal ) + 3;
-                System.out.println("$" + " ".repeat(9 - totalDigits) + String.format("%2f", productTotal));
+                System.out.println("$" + " ".repeat(8 - totalDigits) + String.format("%.2f", productTotal));
 
                 orderTotal += productTotal;
             }
