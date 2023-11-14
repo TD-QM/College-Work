@@ -20,7 +20,7 @@ public class Main{
             ResultSet customerNameResult = pStateName.executeQuery();
 
             if(invoiceResults.next()){
-                invoiceResults.absolute(1);
+                invoiceResults.first();
 
                 System.out.println(args[0] + " invoice for " + customerNameResult.getString(1) + "\n");
                 System.out.println("Product" + " ".repeat(24) + " Quantity  Price/Unit     Total");
