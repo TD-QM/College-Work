@@ -18,14 +18,13 @@ public class Main{
             ResultSet invoiceResults = invoiceStatement.executeQuery();
 
             System.out.println("Product" + " ".repeat(24) + " Quantity  Price/Unit       Total");
-            System.out.println("-".repeat(66));
+            System.out.println("-".repeat(65));
 
-            double productTotal = 0;
+            double orderTotal = 0;
             while (invoiceResults.next()){
-
                 String productName = invoiceResults.getString(1);
                 int productDigits = productName.length();
-                System.out.print( productName + " ".repeat(31-productDigits) );
+                System.out.print( productName + " ".repeat(28-productDigits) );
 
                 int quantity = invoiceResults.getInt(2);
                 int quantityDigits = (int) Math.log10( quantity );
@@ -33,24 +32,25 @@ public class Main{
 
                 double productPrice = invoiceResults.getDouble(3);
                 int priceDigits = (int) Math.log10( productPrice ) + 3;
-                System.out.print( "$" + " ".repeat(9 - priceDigits) + productPrice + "  ");
+                System.out.print( "$" + " ".repeat(9 - priceDigits) + String.format("%2f", productPrice) + "  ");
 
-                productTotal = productPrice*quantity;
+                double productTotal = productPrice*quantity;
                 int totalDigits = (int) Math.log10( productTotal ) + 3;
-                System.out.println("$" + " ".repeat(9 - totalDigits) + productTotal);
+                System.out.println("$" + " ".repeat(9 - totalDigits) + String.format("%2f", productTotal));
 
+                orderTotal += productTotal;
             }
 
             double shippingCost = 0;
 
-            if (productTotal < 35){
+            if (orderTotal < 35){
                 shippingCost = 10;
             }
 
             System.out.println();
-            System.out.println("Total Product Cost: " + productTotal);
+            System.out.println("Total Product Cost: " + orderTotal);
             System.out.println("Shipping Cost:      " + shippingCost);
-            System.out.println("Total Due:          " + (productTotal+shippingCost));
+            System.out.println("Total Due:          " + (orderTotal+shippingCost));
 
             conn.close();
 
