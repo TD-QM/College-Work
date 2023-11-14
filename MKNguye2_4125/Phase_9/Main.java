@@ -17,14 +17,14 @@ public class Main{
 
             ResultSet invoiceResults = invoiceStatement.executeQuery();
 
-            System.out.println("Product" + " ".repeat(24) + " Quantity  Price/Unit       Total");
-            System.out.println("-".repeat(65));
+            System.out.println("Product" + " ".repeat(24) + " Quantity  Price/Unit      Total");
+            System.out.println("-".repeat(64));
 
             double orderTotal = 0;
             while (invoiceResults.next()){
                 String productName = invoiceResults.getString(1);
                 int productDigits = productName.length();
-                System.out.print( productName + " ".repeat(29-productDigits) );
+                System.out.print( productName + " ".repeat(30-productDigits) );
 
                 int quantity = invoiceResults.getInt(2);
                 int quantityDigits = (int) Math.log10( quantity );
@@ -48,9 +48,9 @@ public class Main{
             }
 
             System.out.println();
-            System.out.println("Total Product Cost: " + orderTotal);
-            System.out.println("Shipping Cost:      " + shippingCost);
-            System.out.println("Total Due:          " + (orderTotal+shippingCost));
+            System.out.println("Total Product Cost: " + String.format("%.2f", orderTotal));
+            System.out.println("Shipping Cost:      " + String.format("%.2f", shippingCost));
+            System.out.println("Total Due:          " + String.format("%.2f", (orderTotal+shippingCost)));
 
             conn.close();
 
