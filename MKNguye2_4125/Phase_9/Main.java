@@ -27,15 +27,15 @@ public class Main{
                 System.out.print( productName + " ".repeat(30-productDigits) );
 
                 int quantity = invoiceResults.getInt(2);
-                int quantityDigits = (int) Math.log10( quantity );
+                int quantityDigits = (int) Math.log10( quantity ) + 1;
                 System.out.print( " ".repeat( 8 - quantityDigits+1) + quantity + "  ");
 
                 double productPrice = invoiceResults.getDouble(3);
-                int priceDigits = (int) Math.log10( productPrice ) + 3;
+                int priceDigits = (int) Math.log10( productPrice ) + 4;
                 System.out.print( "$" + " ".repeat(8 - priceDigits) + String.format("%.2f", productPrice) + "  ");
 
                 double productTotal = productPrice*quantity;
-                int totalDigits = (int) Math.log10( productTotal ) + 3;
+                int totalDigits = (int) Math.log10( productTotal ) + 4;
                 System.out.println("$" + " ".repeat(8 - totalDigits) + String.format("%.2f", productTotal));
 
                 orderTotal += productTotal;
