@@ -257,20 +257,21 @@ def importBoard(filePath):
             
 
 first_sudoku = [
-    [5, 0, 1, 0, 0, 0, 6, 0, 4],
-    [0, 9, 0, 3, 0, 6, 0, 5, 0],
-    [0, 0, 0, 0, 9, 0, 0, 0, 0],
-    [4, 0, 0, 0, 0, 0, 0, 0, 9],
-    [0, 0, 0, 1, 0, 9, 0, 0, 0],
-    [7, 0, 0, 0, 0, 0, 0, 0, 6],
-    [0, 0, 0, 0, 2, 0, 0, 0, 0],
-    [0, 8, 0, 5, 0, 7, 0, 6, 0],
-    [1, 0, 3, 0, 0, 0, 7, 0, 2]
+    [8, 5, 3,  0, 0, 0,  0, 0, 0],
+    [2, 0, 0,  7, 5, 4,  0, 0, 3],
+    [0, 0, 9,  0, 0, 3,  0, 0, 6],
+    
+    [0, 0, 0,  9, 8, 6,  0, 0, 7],
+    [0, 0, 6,  0, 0, 5,  0, 1, 0],
+    [4, 3, 0,  2, 0, 0,  0, 0, 0],
+    
+    [0, 0, 0,  1, 0, 0,  4, 9, 5],
+    [0, 0, 5,  0, 7, 0,  2, 0, 0],
+    [1, 2, 0,  0, 0, 0,  0, 0, 8]
 ]
 
 
 
-'''
 tic = time.perf_counter()
 print(boardToString(first_sudoku, 3, 3))
 solveBoard(first_sudoku, 3, 3)
@@ -278,8 +279,3 @@ print(boardToString(first_sudoku, 3, 3))
 toc = time.perf_counter()
 timeTaken = toc - tic
 print("Ran for " + str(timeTaken) + " seconds")
-'''
-
-board = importBoard("./Boards/3x3Boards/3x3Board3.txt")
-print(board)
-print(boardToString(board, 3, 3))
