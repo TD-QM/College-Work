@@ -54,11 +54,12 @@ def boardToTxtFormat(board, length, width):
 
 
 # Generates a board with a specified length and width of the inner boards
-def makeBoard(board, length, width, num):
+def makeBoard(length, width, num):
     tic = time.perf_counter()
     iter = 0
     totalLength = length*width
     valid = False
+    board = [[0 for j in range(length*width)] for j in range(length*width)]
     numList = [[(a+1) for a in range(totalLength)] for a in range(totalLength)]
     invalidList = [[[] for a in range(totalLength)] for b in range(totalLength)]
     
@@ -97,8 +98,8 @@ def makeBoard(board, length, width, num):
                     board[r][c] = 0
             
             toc = time.perf_counter()
-            if (toc - tic) > (1.21 ** (length*width)):
-                return 0
+            if (toc - tic) > (1.25 ** (length*width)):
+                return board, False, 0, 0
             
             c += 1
             if not valid:
@@ -110,8 +111,9 @@ def makeBoard(board, length, width, num):
     toc = time.perf_counter()
     print("Board" + str(length) + "x" + str(width) + "#" + str(num))
     print("Total Iterations: " + str(iter))
-    print("Ran for " + str((toc - tic)) + " seconds")
-    return 1
+    timeTaken = toc-tic
+    print("Ran for " + str(timeTaken) + " seconds")
+    return board, True, timeTaken, iter
                     
                     
     
@@ -140,50 +142,69 @@ def checkCell(board, length, width, y, x, input):
     return True
 
 
-    
+length = 1
+while length < 25:
+    width = 1
+    while width < 25:
 
-length = int(sys.argv[1])
-width = int(sys.argv[2])
-start = True
+        if length*width > 25:
+            break
 
-
-while length < 6:
-    if not start:
-        width = length
-    while width < 6:
-        dirName = "./Boards/" + str(length) + "x" + str(width) + "Boards/"
+        dirName = "./Ver1.2Boards/" + str(length) + "x" + str(width) + "Boards/"
         try:
             os.mkdir(dirName)
         except OSError as error:
             pass
+
         timeFileName = dirName + "TimeFile.txt"
         timeFile = open(timeFileName, "w")
-        timeFile.write("")
-        timeFile.close()
+        timer = ""
+
+        iterFileName = dirName + "Iterations.txt"
+        iterFile = open(iterFileName, "w")
+        iter = ""
+
+        resetFileName = dirName + "ResetFile.txt"
+        resetFile = open(resetFileName, "w")
+        resets = 0
+
+        failedBoardsName = dirName + "FailedBoards.txt"
+        failedBoardsFile = open(failedBoardsName, "w")
+        failedBoards = ""
 
         i = 0
         while i < 101:
             boardName = dirName + str(length) + "x" + str(width) + "Board" + str(i) + ".txt"
             timeFileName = dirName + "TimeFile.txt"
 
-            file = open(boardName, "w")
-            timeFile = open(timeFileName, "a")
-
-            board = [[0 for j in range(length*width)] for j in range(length*width)]
+            boardFile = open(boardName, "w")
 
             tic = time.perf_counter()
 
-            if not makeBoard(board, length, width, i) == 0:
-                file.write( boardToTxtFormat(board, length, width) )
-                toc = time.perf_counter()
-                timeFile.write(str(toc - tic) + "\n")
+            board, completed, timeTaken, iterations = makeBoard(length, width, i)
+
+            if not completed:
+                failedBoards += boardToTxtFormat(board, length, width) + "\n"
+                resets += 1
+            else:
+                boardFile.write(boardToTxtFormat(board, length, width))
+                timer += str(timeTaken) + "\n"
+                iter += str(iterations) + "\n"
                 i += 1
             
-            file.close()
-            timeFile.close()
-            
+            boardFile.close()
+
+        timeFile.write(timer)
+        iterFile.write(iter)
+        resetFile.write(str(resets))
+        failedBoardsFile.write(failedBoards)
+
+        timeFile.close()
+        iterFile.close()
+        resetFile.close()
+        failedBoardsFile.close()
+        
         width += 1
-    start = False
     length += 1
 
 #makeBoard(board)
