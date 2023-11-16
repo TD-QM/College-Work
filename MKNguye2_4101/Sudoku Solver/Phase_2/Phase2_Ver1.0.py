@@ -53,6 +53,14 @@ def validListToString(validList, length, width):
     
     return output
     
+    
+def printBoard(board, innerLength, innerWidth, method):
+    display = ""
+    display += "Method: " + method + "\n"
+    display += boardToString(board, innerLength, innerWidth) + "\n"
+    time.sleep(0.03)
+    os.system("cls")
+    print(display)
 
 
 def solveBoard(board, innerLength, innerWidth):
@@ -65,6 +73,7 @@ def solveBoard(board, innerLength, innerWidth):
     
     while not boardSolved(board):
         while True:
+            printBoard(board, innerLength, innerWidth, "Naked Single")
             if not nakedSingle(board, validList, innerLength, innerWidth):
                 status = 1
                 break
@@ -72,17 +81,20 @@ def solveBoard(board, innerLength, innerWidth):
         if (status == 1):
             status = 0
             while True:
+                printBoard(board, innerLength, innerWidth, "Hidden Single")
                 if hiddenSingle(board, validList, innerLength, innerWidth):
                     status = 2
                     break
-                
+        ''' 
         if (status == 2):
             status = 0
             while True:
+                printBoard(board, innerLength, innerWidth, "Locked Candidates")
                 if lockedCandidates(board, validList, innerLength, innerWidth):
                     status = 3
                     break
             pass
+        '''
         
         
     pass
@@ -335,7 +347,7 @@ def importBoard(filePath):
 
 
 
-
+'''
 testBoard = [
     [0, 0, 0,  0, 0, 0,  0, 0, 0],
     [0, 0, 0,  0, 0, 0,  0, 0, 0],
@@ -378,4 +390,3 @@ print(boardToString(first_sudoku, 3, 3))
 toc = time.perf_counter()
 timeTaken = toc - tic
 print("Ran for " + str(timeTaken) + " seconds")
-'''
