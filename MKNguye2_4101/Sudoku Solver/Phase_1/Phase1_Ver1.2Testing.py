@@ -45,7 +45,10 @@ def boardToTxtFormat(board, length, width):
 
     for row in board:
         for col in row:
-            numDigits = int(math.log(col, 10)) + 1
+            if col == 0:
+                numDigits = 1
+            else:
+                numDigits = int(math.log(col, 10)) + 1
             output += (" " * (maxDigits-numDigits + 1)) + str(col)
         output += "\n"
     
@@ -142,12 +145,12 @@ def checkCell(board, length, width, y, x, input):
     return True
 
 
-length = 1
+length = 5
 while length < 25:
     width = 1
     while width < 25:
 
-        if length*width > 25:
+        if length*width > 20:
             break
 
         dirName = "./Ver1.2Boards/" + str(length) + "x" + str(width) + "Boards/"
