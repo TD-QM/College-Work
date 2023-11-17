@@ -7,6 +7,7 @@ Because of the volitile nature of the backtracking algorithm, the 3rd input is a
 '''
 
 import sys, math, random, time, os
+import numpy as np
 
 def printBoard(board, length, width):
     maxDigits = int(math.log(length*width, 10)) + 1
