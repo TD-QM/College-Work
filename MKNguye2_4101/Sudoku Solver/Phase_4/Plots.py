@@ -5,8 +5,8 @@ import statistics
 
 plt.xlabel('Total Size (Length*Width of Subgrids)')
 plt.ylabel('Time (Seconds) (Average)')
-#plt.ylim(0, .0175)
-plt.title('Creating Boards (Linear Time Method)')
+#plt.ylim(.000002, .0000055)
+plt.title('Solving Boards (Constraint Checking Method) (With Outliers)')
 
 
 x = []
@@ -15,12 +15,19 @@ avg = []
 avgSize = []
 
 length = 1
-while length < 10:
-    width = 1
-    while width < 10:
+count = 0
+while length < 6:
+    if length == 1:
+        width = 2
+    else:
+        width = 1
 
+    while width < 6:
 
-        dirName = "./Ver1.5Boards/" + str(length) + "x" + str(width) + "Boards/TimeFile.txt"
+        if length == 5 & width == 5:
+            break
+
+        dirName = "./Phase_3/solvedBoardsTimes_CC/" + str(length) + "x" + str(width) + "Boards/TimeFile.txt"
         size = length*width*length*width 
         
         timeFile = open(dirName, "r")
@@ -32,8 +39,11 @@ while length < 10:
             y.append( float(item) )
             x.append( size )
 
+        
         avg.append( sum(timeList) / len(timeList) )
         avgSize.append(size)
+        count += 1
+        
 
         width += 1
     length += 1

@@ -85,7 +85,6 @@ def makeBoard(board, length, width, seed):
             display += "(x,y): (" + str(j) + "," + str(i) + ")\n"
             display += "Board: \n"
             display += printBoard(board, length, width) + "\n"
-            time.sleep(0.03)
             os.system("cls")
             print(display)
             

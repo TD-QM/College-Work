@@ -56,8 +56,11 @@ def boardToTxtFormat(board, length, width):
 
 # Generates a board with a specified length and width of the inner boards
 def makeBoard(board, length, width):
+    # Start timer
     tic = time.perf_counter()
+    # For data
     iter = 0
+    
     totalLength = length*width
     valid = False
     numList = [[(a+1) for a in range(totalLength)] for a in range(totalLength)]

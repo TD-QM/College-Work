@@ -58,30 +58,45 @@ def boardToTxtFormat(board, length, width):
 
 # Generates a board with a specified length and width of the inner boards
 def makeBoard(length, width, num):
+    # Timer
     tic = time.perf_counter()
+    # For stats
     iter = 0
+
     totalLength = length*width
+
+    # For backtracking
     valid = False
+
+    # Empty Board
     board = [[0 for j in range(length*width)] for j in range(length*width)]
+    # List of numbers from 1 to totalLength (inclusive)
     numList = [[(a+1) for a in range(totalLength)] for a in range(totalLength)]
+    # List for keeping invalid numbers at positions
     invalidList = [[[] for a in range(totalLength)] for b in range(totalLength)]
     
+    # Iterate through rows
     r = 0
     while(r < totalLength):
+        # Shuffle the numList
         random.shuffle(numList[r])
-        #print("New numList: " + str(numList))
         
+        # Iterate through columns
         c = 0
         while(c < totalLength):
+            # For stats
             iter = iter + 1 
+            # For backtracking
             valid = False
             
+            # Iterate though numList to check for valid inputs
             for k, input in enumerate(numList[r]):
                 if (checkCol(board, length, width, r, c, input) & checkCell(board, length, width, r, c, input)) & (not(input in invalidList[r][c])):
                     valid = True
                     board[r][c] = numList[r].pop(k)
                     break
             
+            # Backtracking
             if not valid:
                 if c == 0:
                     board[r][c] = 0
@@ -100,17 +115,23 @@ def makeBoard(length, width, num):
                     invalidList[r][c].append(board[r][c])
                     board[r][c] = 0
             
+            # Timeout Functionality
             toc = time.perf_counter()
             if (toc - tic) > (1.25 ** (length*width)):
                 return board, False, 0, 0
             
+            # Increment column
             c += 1
+            # Backtrack if there's no valid solution
             if not valid:
                 c -= 1
+
+        # Increment row (Don't increment if there isn't a valid solution)
         if not valid:
             r -= 1
         r += 1
 
+    # Returning board and statistics
     toc = time.perf_counter()
     print("Board" + str(length) + "x" + str(width) + "#" + str(num))
     print("Total Iterations: " + str(iter))
