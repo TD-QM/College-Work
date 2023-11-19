@@ -77,7 +77,7 @@ def makeBaseBoard(innerLength, innerWidth, outerLength, outerWidth):
                 for innerCol in range(innerLength):
                     baseCol = (innerCol+outerRow)%innerLength
                     baseRow = (innerRow+outerCol)%innerWidth
-                    actualBoard[ (outerRow*innerWidth)+innerRow ][ (outerCol*innerLength)+innerCol ] = baseBoard[baseRow][baseCol] + 0
+                    actualBoard[ (outerRow*innerWidth)+innerRow ][ (outerCol*innerLength)+innerCol ] = baseBoard[baseRow][baseCol]
 
     return actualBoard
 
