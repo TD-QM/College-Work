@@ -6,7 +6,7 @@ import statistics
 plt.xlabel('Total Size (Length*Width of Subgrids)')
 plt.ylabel('Time (Seconds) (Average)')
 plt.ylim(.000002, .0000055)
-plt.title('Solving Boards (Niave Method) (Without Outliers)')
+plt.title('Solving Boards (Constraing Checking Method) (Without Outliers)')
 
 
 x = []

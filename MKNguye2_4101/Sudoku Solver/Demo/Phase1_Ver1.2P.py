@@ -3,7 +3,7 @@ Version 1.2 (Print)
 
 The exact same as 1.2 but it prints out the board as it fills in. Obviously, this slows the program down, but it's good for demos
 Because of the volitile nature of the backtracking algorithm, the 3rd input is a seed that can be used to gaurantee a result
-    So far, "3 4 1" is a good choice because it only takes around 30 sec for the demo to complete
+    So far, "3 4 2" is a good choice because it only takes around 30 sec for the demo to complete
 '''
 
 import sys, math, random, time, os
@@ -34,6 +34,23 @@ def printBoard(board, length, width):
         output += "\n"
     
     return output
+
+def boardToTxtFormat(board, length, width):
+    output = ""
+    maxDigits = int(math.log(length*width, 10)) + 1
+
+    for row in board:
+        for col in row:
+            if col == 0:
+                numDigits = 1
+            else:
+                numDigits = int(math.log(col, 10)) + 1
+            output += (" " * (maxDigits-numDigits + 1)) + str(col)
+        output += "\n"
+    
+    return output
+
+
 
 def makeBoard(board, length, width, seed):
     iter = 0
@@ -85,6 +102,7 @@ def makeBoard(board, length, width, seed):
             display += "(x,y): (" + str(j) + "," + str(i) + ")\n"
             display += "Board: \n"
             display += printBoard(board, length, width) + "\n"
+            time.sleep(0.03)
             os.system("cls")
             print(display)
             
@@ -124,10 +142,10 @@ def checkCell(board, length, width, y, x, input):
 
     
 
-length = int(sys.argv[1])
-width = int(sys.argv[2])
+length = 3
+width = 4
 area = length*width
-seed = int(sys.argv[3])
+seed = 2
 
 board = [[0 for i in range(area)] for i in range(area)]
 seedList = [(a+1) for a in range(9999)]
@@ -140,5 +158,7 @@ makeBoard(board, length, width, seedList)
 toc = time.perf_counter()
 print("Ran for " + str((toc - tic)) + " seconds")
 
-
+file = open("./Demo/DemoBoardSolution.txt", "w")
+file.write(boardToTxtFormat(board, length, width))
+file.close()
 #makeBoard(board)

@@ -6,7 +6,7 @@ import statistics
 plt.xlabel('Total Size (Length*Width of Subgrids)')
 plt.ylabel('Time (Seconds) (Average)')
 #plt.ylim(.000002, .0000055)
-plt.title('Solving Boards (Constraint Checking Method) (With Outliers)')
+plt.title('Solving Boards (Backtracking Method) (With Outliers)')
 
 
 x = []
@@ -27,7 +27,7 @@ while length < 6:
         if length == 5 & width == 5:
             break
 
-        dirName = "./Phase_3/solvedBoardsTimes_CC/" + str(length) + "x" + str(width) + "Boards/TimeFile.txt"
+        dirName = "./Phase_3/solvedBoardsTimes/" + str(length) + "x" + str(width) + "Boards/TimeFile.txt"
         size = length*width*length*width 
         
         timeFile = open(dirName, "r")
