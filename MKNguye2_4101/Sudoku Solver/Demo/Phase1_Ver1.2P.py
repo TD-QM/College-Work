@@ -9,9 +9,9 @@ Because of the volitile nature of the backtracking algorithm, the 3rd input is a
 import sys, math, random, time, os
 import numpy as np
 
-def printBoard(board, length, width):
+def boardToString(board, length, width):
     maxDigits = int(math.log(length*width, 10)) + 1
-    horizontalLine = "-"*((maxDigits) * length * width) + "-"*((width)*(maxDigits+1)*2) + "-"*(width+1)
+    horizontalLine = "-"*((maxDigits+1) * length * width) + "-"*((width)*(maxDigits)) + "-"*(width+1)
     totalLength = length*width
     output = horizontalLine + "\n"
     
@@ -53,32 +53,50 @@ def boardToTxtFormat(board, length, width):
 
 
 def makeBoard(board, length, width, seed):
+    # For debugging
     iter = 0
-    totalLength = length*width
+
+    # Valid Number Boolean
     valid = False
+    
+    # List of values from 1 to totalLength inclusive
+    totalLength = length*width
     numList = [[(k+1) for k in range(totalLength)] for k in range(totalLength)]
+    
+    # Records the invalid numbers at coordinates
     invalidList = [[[] for a in range(totalLength)] for b in range(totalLength)]
+    
+    # Displaying the program as it runs (Only for the demo)
     display = ""
     
+    # Iterate through the rows
     i = 0
     while(i < totalLength):
+        
+        # Shuffle the inputs for variance in output (Seeded for the demo)
         random.seed(seed[i])
         random.shuffle(numList[i])
-        #print("New numList: " + str(numList))
         
+        # Iterate through the columns
         j = 0
         while(j < totalLength):
+            # Debugging/Stats
             iter = iter + 1 
             
+            # Automatically assume there isn't a valid input
             valid = False
             
+            # Iterate through number list
             for k in range(0, len(numList[i])):
                 input = numList[i][k]
+                
+                # Check the rest of the column and box to see if its valid
                 if (checkCol(board, length, width, i, j, input) & checkCell(board, length, width, i, j, input)) & (not(input in invalidList[i][j])):
                     valid = True
                     board[i][j] = numList[i].pop(k)
                     break
             
+            # Backtrack if not valid
             if not valid:
                 if j == 0:
                     board[i] = [0 for k in range(totalLength)]
@@ -96,12 +114,13 @@ def makeBoard(board, length, width, seed):
                     invalidList[i][j].append(board[i][j])
                     board[i][j] = 0
                 
+            # Display the board as it runs (Only for the demo)
             display = ""
             display += "- Iteration #" + str(iter) + " -\n"
             display += "numList: " + str(numList[i]) + "\n"
             display += "(x,y): (" + str(j) + "," + str(i) + ")\n"
             display += "Board: \n"
-            display += printBoard(board, length, width) + "\n"
+            display += boardToString(board, length, width) + "\n"
             time.sleep(0.03)
             os.system("cls")
             print(display)

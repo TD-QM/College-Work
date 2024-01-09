@@ -83,7 +83,11 @@ def makeBaseBoard(innerLength, innerWidth, outerLength, outerWidth):
 
 def randomizeBoard(board, innerLength, innerWidth, outerLength, outerWidth):
     randomizeInnerCol(board, innerLength, innerWidth, outerLength, outerWidth)
+    print("Randomize Column:")
+    print(boardToString(board, 3, 4))
     randomizeInnerRow(board, innerLength, innerWidth, outerLength, outerWidth)
+    print("RandomizeRow:")
+    print(boardToString(board, 3, 4))
 
 def randomizeInnerCol(board, innerLength, innerWidth, outerLength, outerWidth):
     for outerCol in range(outerLength):
@@ -122,5 +126,3 @@ print("Base Board:")
 print(boardToString(board, 3, 4) + "\n")
 
 randomizeBoard(board, 3, 4, 4, 3)
-print("New Board:")
-print(boardToString(board, 3, 4))

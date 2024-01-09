@@ -22,6 +22,19 @@ def isSafe(grid, row, col, num):
         
     return True
 
+def isSafe(grid, row, col, num):
+    # Check if 'num' is not in the current row
+    for x in range(len(grid[0])):
+        if grid[row][x] == num:
+            return False
+
+    # Check if 'num' is not in the current column
+    for x in range(len(grid)):
+        if grid[x][col] == num:
+            return False
+        
+    return True
+
 def solveSudoku(grid, row, col, numSolution):
     
     #if currently on last cell, board is a valid solution
@@ -122,11 +135,18 @@ def boardToString(board, length, width):
 
 
 
+seed = 2
+seedList = [(a+1) for a in range(9999)]
+random.seed(seed)
+random.shuffle(seedList)
+
+
 
 grid = importBoard("./Demo/DemoBoardSolution.txt")
 count = 0
 print("Initial Grid:")
 print(boardToString(grid, 3, 4))
+
 
 while(count < 2):
     rRow = random.randint(0, len(grid[0])-1)
@@ -134,16 +154,17 @@ while(count < 2):
     if grid[rRow][rCol] != 0:
         oldGrid = copy.deepcopy(grid)
         grid[rRow][rCol] = 0
-
+        
         time.sleep(0.03)
         os.system("cls")
-        print("New Grid w/ Removed Num")
+        print("Removing Numbers:")
         print(boardToString(grid, 3, 4))
-
         count = solveSudoku(grid, 0, 0, 0)
         if (count==2):
             grid = oldGrid
 
+time.sleep(0.03)
+os.system("cls")
 print("Uniquely Solveable Grid:")
 print(boardToString(grid, 3, 4))
 
