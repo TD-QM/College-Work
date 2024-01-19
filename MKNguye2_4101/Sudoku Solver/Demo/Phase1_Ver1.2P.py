@@ -4,6 +4,8 @@ Version 1.2 (Print)
 The exact same as 1.2 but it prints out the board as it fills in. Obviously, this slows the program down, but it's good for demos
 Because of the volitile nature of the backtracking algorithm, the 3rd input is a seed that can be used to gaurantee a result
     So far, "3 4 2" is a good choice because it only takes around 30 sec for the demo to complete
+
+This is a test aaaaaaa
 '''
 
 import sys, math, random, time, os
