@@ -41,9 +41,33 @@ public class MKNguye2 extends Bot {
 		// possible next states of the game.  Make sure that we do not exceed
 		// the number of GameTree nodes that we are allowed to generate.
 		Iterator<State> iterator = root.next().iterator();
+		double bestEval = -9999.0;
 		
-		while(!root.searchLimitReached() && iterator.hasNext())
-			children.add(iterator.next());
+		if(root.turn == 0 && root.player == Player.WHITE) {
+			return root.next(new Pawn(Player.WHITE, 4, 1), new Pawn(Player.WHITE, 4, 3));
+		} else if (root.turn == 1 && root.player == Player.WHITE) {
+			return root.next(new Knight(Player.WHITE, 1, 0), new Knight(Player.WHITE, 2, 2));
+		} else if(root.turn == 0 && root.player == Player.BLACK) {
+			return root.next(new Pawn(Player.BLACK, 2, 6), new Pawn(Player.BLACK, 2, 5));
+		} else if (root.turn == 1 && root.player == Player.BLACK) {
+			return root.next(new Pawn(Player.BLACK, 3, 6), new Pawn(Player.BLACK, 3, 4));
+		}
+		
+		
+		while(!root.searchLimitReached() && iterator.hasNext()) {
+			
+			State testState = iterator.next();
+			double testEval = eval(testState);
+			
+			if(testEval > bestEval) {
+				bestEval = testEval;
+				children.clear();
+				children.add(testState);
+			} else if (testEval == bestEval) {
+				children.add(testState);
+			}
+			
+		}
 		// Choose one of the children at random.
 		
 		
@@ -53,10 +77,56 @@ public class MKNguye2 extends Bot {
 		
 	}
 	
+	protected ArrayList<State> minimax(ArrayList<State> testedState, int ply) {
+		if (ply == 1) {
+			return max(minimax(testedState, ply+1));
+		} else if (ply == 2) {
+			return min(testedState);
+		}
+		return;
+	}
+	
+	protected ArrayList<State> max(ArrayList<State> stateList) {
+		ArrayList<State> maxStates = new ArrayList<State>();
+		double max = eval(stateList.get(0));
+		
+		for(int i = 0; i < stateList.size(); i++) {
+			if(eval(stateList.get(i)) > max) {
+				maxStates.clear();
+				maxStates.add(stateList.get(i));
+				max = eval(stateList.get(i));
+			} else if (eval(stateList.get(i)) == max){
+				maxStates.add(stateList.get(i));
+			}
+		}
+		
+		return maxStates;
+	}
+	
+	protected ArrayList<State> min(ArrayList<State> stateList) {
+		ArrayList<State> minStates = new ArrayList<State>();
+		double min = eval(stateList.get(0));
+		
+		for(int i = 0; i < stateList.size(); i++) {
+			if(eval(stateList.get(i)) < min) {
+				minStates.clear();
+				minStates.add(stateList.get(i));
+				min = eval(stateList.get(i));
+			} else if (eval(stateList.get(i)) == min){
+				minStates.add(stateList.get(i));
+			}
+		}
+		
+		return minStates;
+	}
+	
+	
 	protected double eval(State testedState) {
 		double evaluation = 0.0;
 		double myMaterialScore = 0.0;
 		double oppMaterialScore = 0.0;
+		
+		
 		
 		for(int row = 0; row < 8; row++) {
 			for(int col = 0; col < 8; col++) {
@@ -65,6 +135,7 @@ public class MKNguye2 extends Bot {
 					Piece testedPiece = testedState.board.getPieceAt(row, col);
 					
 					int materialScore = 0;
+					
 					if(testedPiece instanceof Queen) {
 						materialScore = 10;
 					} else if(testedPiece instanceof Rook) {
@@ -75,14 +146,13 @@ public class MKNguye2 extends Bot {
 						materialScore = 3;
 					} else if(testedPiece instanceof Pawn) {
 						materialScore = 1;
+					}
+					
+					if(testedPiece.player == testedState.player) {
+						oppMaterialScore += materialScore;
 					} else {
-						materialScore = 0;
+						myMaterialScore += materialScore;
 					}
-					
-					if() {
-						
-					}
-					
 				}
 			}
 		}
