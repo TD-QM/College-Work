@@ -69,12 +69,14 @@ class ClientThread implements Runnable{
 							outputList.remove(listIndex);
 							break;
 						case "AllUsers":
-							out.writeUTF("Server: Listing all users...");
-							out.writeUTF("------------------------------------------------");
+							String userOutput = "";
+							userOutput += "Server: Listing all users...\n";
+							userOutput += "------------------------------------------------\n";
 							for(int i = 0; i < userList.size(); i++){
-								out.writeUTF(userList.get(i));
+								userOutput += userList.get(i) + "\n";
 							}
-							out.writeUTF("------------------------------------------------");
+							userOutput += "------------------------------------------------\n";
+							out.writeUTF(userOutput);
 							break;
 						default:
 							for(int i = 0; i < outputList.size(); i++){
