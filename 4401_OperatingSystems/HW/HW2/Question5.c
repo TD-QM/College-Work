@@ -21,6 +21,7 @@ int main(int args, char* argv[]){
 		pid = fork();
 		if(pid != 0){
 			waitpid(pid, NULL, 0);
+            break;
 		}
 	}
 
