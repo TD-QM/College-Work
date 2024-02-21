@@ -47,7 +47,7 @@ import com.stephengware.java.games.chess.state.State;
  * 		Implement a colored square strength/weakness for the bishops
  * 			This is usually determined by how your pawn structure is. If most pawns are on dark squares, then you're dark squared bishop isn't as strong since it's easily blocked by the pawns.
  */
-public class MKNguye2 extends Bot {
+public class MKNguye3 extends Bot {
 
 	/** A random number generator */
 	private final Random random;
@@ -56,7 +56,7 @@ public class MKNguye2 extends Bot {
 	 * Constructs a new chess bot named "My Chess Bot" and whose random number
 	 * generator (see {@link java.util.Random}) begins with a seed of 0.
 	 */
-	public MKNguye2() {
+	public MKNguye3() {
 		super("My Chess Bot");
 		this.random = new Random(0);
 	}
@@ -74,17 +74,17 @@ public class MKNguye2 extends Bot {
 			return root.next(new Pawn(Player.WHITE, 4, 1), new Pawn(Player.WHITE, 4, 3));
 		} else if (root.turn == 1 && root.player == Player.WHITE) {
 			return root.next(new Knight(Player.WHITE, 1, 0), new Knight(Player.WHITE, 2, 2));
-		} else if (root.turn == 0 && root.player == Player.BLACK) {
-			return root.next(new Pawn(Player.BLACK, 3, 6), new Pawn(Player.BLACK, 3, 4));
-		}
 //		} else if (root.turn == 0 && root.player == Player.BLACK) {
-//			return root.next(new Pawn(Player.BLACK, 2, 6), new Pawn(Player.BLACK, 2, 5));
-//		} else if (root.turn == 1 && root.player == Player.BLACK) {
 //			return root.next(new Pawn(Player.BLACK, 3, 6), new Pawn(Player.BLACK, 3, 4));
 //		}
+		} else if (root.turn == 0 && root.player == Player.BLACK) {
+			return root.next(new Pawn(Player.BLACK, 2, 6), new Pawn(Player.BLACK, 2, 5));
+		} else if (root.turn == 1 && root.player == Player.BLACK) {
+			return root.next(new Pawn(Player.BLACK, 3, 6), new Pawn(Player.BLACK, 3, 4));
+		}
 		
 		Object[] minimaxReturn = minimax(root, root, 4);
-		System.out.println("\n MKNguye2 Turn #" + root.turn + ": " + (double)minimaxReturn[1]);
+		System.out.println("\n MKNguye3 Turn #" + root.turn + ": " + (double)minimaxReturn[1]);
 		if(minimaxReturn[1] != null) {
 			return (State)minimaxReturn[0];
 		} else {
@@ -250,7 +250,14 @@ public class MKNguye2 extends Bot {
 					
 					// Castling Calc (King Safety)
 					if(testedPiece instanceof King) {
-						
+						evaluation += castleCalc(testedState, testedPiece, root);
+					}
+					// End Castling Calc
+					
+					
+					// King Safety Calc
+					if(testedPiece instanceof King) {
+						evaluation += kingSafetyCalc(testedState, testedPiece, root);
 					}
 					// End King Safety Calc
 					
@@ -285,10 +292,20 @@ public class MKNguye2 extends Bot {
 			}
 		}
 		
+		
+		// Stalemate Calc
+		if((evaluation > 3 && testedState.movesUntilDraw < 4) && (testedState.player == root.player) ){
+			evaluation -= 15;
+		} else if((evaluation < -3 && testedState.movesUntilDraw < 4) && (testedState.player == root.player) ){
+			evaluation += 15;
+		}
+		// End Stalemate Calc
+		
+		
 		// Checkmate Calc
 		if(testedState.over && testedState.check && testedState.movesUntilDraw > 10) {
 			if(testedState.player == root.player) {
-				evaluation -= 999;
+				evaluation -= 999 + testedState.turn;
 			} else if(testedState.player != root.player) {
 				evaluation += 999 - testedState.turn;
 			}
@@ -328,13 +345,13 @@ public class MKNguye2 extends Bot {
 		double evaluation = 0.0;
 		if(testedState.board.hasMoved(testedPiece)) {
 			if (testedPiece instanceof Queen) {
-				developmentScore = 5;
+				developmentScore = 4;
 			} else if (testedPiece instanceof Rook) {
-				developmentScore = 2.5;
+				developmentScore = 1.5;
 			} else if (testedPiece instanceof Knight) {
-				developmentScore = 1.5;
+				developmentScore = 3;
 			} else if (testedPiece instanceof Bishop) {
-				developmentScore = 1.5;
+				developmentScore = 2;
 			} else if (testedPiece instanceof Pawn) {
 				developmentScore = .5;
 			}
@@ -803,8 +820,63 @@ public class MKNguye2 extends Bot {
 	
 	
 	
-	private double castleCalc(State testedState, Piece testedPiece, State root) {
-		return 0.0;
+	private double castleCalc(State testedState, Piece king, State root) {
+		double evaluation = 0;
+		double castleScore = 0;
+		
+		if(testedState.previous.previous.board.pieceAt(king.file, king.rank+2, king.player)) {
+			castleScore = 2;
+		} else if (testedState.previous.previous.board.pieceAt(king.file, king.rank-2, king.player)) {
+			castleScore = 2;
+		}
+		
+		if (king.player == root.player) {
+			evaluation += castleScore;
+		} else {
+			evaluation -= castleScore;
+		}
+		
+		return evaluation;
+	}
+	
+	private double kingSafetyCalc(State testedState, Piece testedPiece, State root) {
+		double safety = 0.0;
+		double evaluation = 0.0;
+		
+		 if (testedPiece instanceof King) {
+				if(Board.isValid(testedPiece.rank+1, testedPiece.file-1) && (testedState.board.pieceAt(testedPiece.rank+1, testedPiece.file-1, testedPiece.player) || !testedState.board.pieceAt(testedPiece.rank+1, testedPiece.file-1))){
+					safety += .002;
+				}
+				if(Board.isValid(testedPiece.rank+1, testedPiece.file) && (testedState.board.pieceAt(testedPiece.rank+1, testedPiece.file, testedPiece.player) || !testedState.board.pieceAt(testedPiece.rank+1, testedPiece.file)) ){
+					safety += .002;
+				}
+				if(Board.isValid(testedPiece.rank+1, testedPiece.file+1) && (testedState.board.pieceAt(testedPiece.rank+1, testedPiece.file+1, testedPiece.player) || !testedState.board.pieceAt(testedPiece.rank+1, testedPiece.file+1, testedPiece.player)) ){                             
+					safety += .002;
+				}
+				if(Board.isValid(testedPiece.rank, testedPiece.file-1) && (testedState.board.pieceAt(testedPiece.rank, testedPiece.file-1, testedPiece.player) || !testedState.board.pieceAt(testedPiece.rank, testedPiece.file-1)) ){
+					safety += .002;
+				}
+				if(Board.isValid(testedPiece.rank, testedPiece.file+1) && (testedState.board.pieceAt(testedPiece.rank, testedPiece.file+1, testedPiece.player) || !testedState.board.pieceAt(testedPiece.rank, testedPiece.file+1))){
+					safety += .002;
+				}
+				if(Board.isValid(testedPiece.rank-1, testedPiece.file-1) && (testedState.board.pieceAt(testedPiece.rank-1, testedPiece.file-1, testedPiece.player) || !testedState.board.pieceAt(testedPiece.rank-1, testedPiece.file-1))){
+					safety += .002;
+				}
+				if(Board.isValid(testedPiece.rank-1, testedPiece.file) && (testedState.board.pieceAt(testedPiece.rank-1, testedPiece.file, testedPiece.player) || !testedState.board.pieceAt(testedPiece.rank-1, testedPiece.file))){
+					safety += .002;
+				}
+				if(Board.isValid(testedPiece.rank-1, testedPiece.file+1) && (testedState.board.pieceAt(testedPiece.rank-1, testedPiece.file+1, testedPiece.player) || !testedState.board.pieceAt(testedPiece.rank-1, testedPiece.file+1))){
+					safety += .002;
+				}
+		}
+		
+		if (testedPiece.player == root.player) {
+				evaluation += safety;
+		} else {
+				evaluation -= safety;
+		}
+		
+		return evaluation;
 	}
 	
 	
@@ -815,50 +887,50 @@ public class MKNguye2 extends Bot {
 		double evaluation = 0.0;
 		if (testedPiece instanceof Queen) {
 			for(int i = testedPiece.file-1; i >= 0; i--) { // Left Row
-				spaceControl += .005;
+				spaceControl += .0005;
 				if(testedState.board.pieceAt(i, testedPiece.rank)) {
 					break;
 				}
 			}
 			for(int i = testedPiece.file+1; i <= 7; i++) { // Right Row
-				spaceControl += .005;
+				spaceControl += .0005;
 				if(testedState.board.pieceAt(i, testedPiece.rank)) {
 					break;
 				}
 			}
 			for(int i = testedPiece.rank-1; i >= 0; i--) { // Top Col
-				spaceControl += .005;
+				spaceControl += .0005;
 				if(testedState.board.pieceAt(testedPiece.file, i)) {
 					break;
 				}
 			}
 			for(int i = testedPiece.rank+1; i <= 7; i++) { // Bot Col
-				spaceControl += .005;
+				spaceControl += .0005;
 				if(testedState.board.pieceAt(testedPiece.file, i)) {
 					break;
 				}
 			}
 			
 			for(int i = testedPiece.file-1; i >= 0; i--) {
-				spaceControl += .005;
+				spaceControl += .0005;
 				if(testedState.board.pieceAt(i, i)) {
 					break;
 				}
 			}
 			for(int i = testedPiece.file+1; i <= 7; i++) {
-				spaceControl += .005;
+				spaceControl += .0005;
 				if(testedState.board.pieceAt(i, i)) {
 					break;
 				}
 			}
 			for(int i = testedPiece.file-1; i >= 0; i--) {
-				spaceControl += .005;
+				spaceControl += .0005;
 				if(testedState.board.pieceAt(i, 8-i)) {
 					break;
 				}
 			}
 			for(int i = testedPiece.file+1; i <= 7; i++) {
-				spaceControl += .005;
+				spaceControl += .0005;
 				if(testedState.board.pieceAt(i, 8-i)) {
 					break;
 				}
@@ -889,29 +961,29 @@ public class MKNguye2 extends Bot {
 				}
 			}
 		} else if (testedPiece instanceof Knight) {
-			if(testedState.board.pieceAt(testedPiece.file+1, testedPiece.rank+2)) {
-				spaceControl += .01;
+			if(Board.isValid(testedPiece.file+1, testedPiece.rank+2)) {
+				spaceControl += .015;
 			}
-			if(testedState.board.pieceAt(testedPiece.file+1, testedPiece.rank-2)) {
-				spaceControl += .01;
+			if(Board.isValid(testedPiece.file+1, testedPiece.rank-2)) {
+				spaceControl += .015;
 			}
-			if(testedState.board.pieceAt(testedPiece.file+2, testedPiece.rank+1)) {
-				spaceControl += .01;
+			if(Board.isValid(testedPiece.file+2, testedPiece.rank+1)) {
+				spaceControl += .015;
 			}
-			if(testedState.board.pieceAt(testedPiece.file+2, testedPiece.rank-1)) {
-				spaceControl += .01;
+			if(Board.isValid(testedPiece.file+2, testedPiece.rank-1)) {
+				spaceControl += .015;
 			}
-			if(testedState.board.pieceAt(testedPiece.file-1, testedPiece.rank+2)) {
-				spaceControl += .01;
+			if(Board.isValid(testedPiece.file-1, testedPiece.rank+2)) {
+				spaceControl += .015;
 			}
-			if(testedState.board.pieceAt(testedPiece.file-1, testedPiece.rank-2)) {
-				spaceControl += .01;
+			if(Board.isValid(testedPiece.file-1, testedPiece.rank-2)) {
+				spaceControl += .015;
 			}
-			if(testedState.board.pieceAt(testedPiece.file-2, testedPiece.rank+1)) {
-				spaceControl += .01;
+			if(Board.isValid(testedPiece.file-2, testedPiece.rank+1)) {
+				spaceControl += .015;
 			}
-			if(testedState.board.pieceAt(testedPiece.file-2, testedPiece.rank-1)) {
-				spaceControl += .01;
+			if(Board.isValid(testedPiece.file-2, testedPiece.rank-1)) {
+				spaceControl += .015;
 			}
 		} else if (testedPiece instanceof Bishop) {
 			for(int i = testedPiece.file-1; i >= 0; i--) {
@@ -937,31 +1009,6 @@ public class MKNguye2 extends Bot {
 				if(testedState.board.pieceAt(i, 8-i)) {
 					break;
 				}
-			}
-		} else if (testedPiece instanceof King) {
-			if(Board.isValid(testedPiece.rank+1, testedPiece.file-1) && testedState.board.pieceAt(testedPiece.rank+1, testedPiece.file-1)){
-				spaceControl -= .002;
-			}
-			if(Board.isValid(testedPiece.rank+1, testedPiece.file) && testedState.board.pieceAt(testedPiece.rank+1, testedPiece.file)){
-				spaceControl -= .002;
-			}
-			if(Board.isValid(testedPiece.rank+1, testedPiece.file+1) && testedState.board.pieceAt(testedPiece.rank+1, testedPiece.file+1)){
-				spaceControl -= .002;
-			}
-			if(Board.isValid(testedPiece.rank, testedPiece.file-1) && testedState.board.pieceAt(testedPiece.rank, testedPiece.file-1)){
-				spaceControl -= .002;
-			}
-			if(Board.isValid(testedPiece.rank, testedPiece.file+1) && testedState.board.pieceAt(testedPiece.rank, testedPiece.file+1)){
-				spaceControl -= .002;
-			}
-			if(Board.isValid(testedPiece.rank-1, testedPiece.file-1) && testedState.board.pieceAt(testedPiece.rank-1, testedPiece.file-1)){
-				spaceControl -= .002;
-			}
-			if(Board.isValid(testedPiece.rank-1, testedPiece.file) && testedState.board.pieceAt(testedPiece.rank-1, testedPiece.file)){
-				spaceControl -= .002;
-			}
-			if(Board.isValid(testedPiece.rank-1, testedPiece.file+1) && testedState.board.pieceAt(testedPiece.rank-1, testedPiece.file+1)){
-				spaceControl -= .002;
 			}
 		}
 		
