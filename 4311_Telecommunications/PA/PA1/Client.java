@@ -11,8 +11,8 @@ public class Client{
 		DataOutputStream out;
 		
 		try{
-			socket = new Socket("localhost", Integer.parseInt(args[0]));
-			System.out.println("Connected to server");
+			socket = new Socket(args[0], Integer.parseInt(args[1]));
+			System.out.println("Connected to " + args[0] + " server");
 			
 			in = new DataInputStream(socket.getInputStream());
 			out = new DataOutputStream(socket.getOutputStream());
@@ -25,6 +25,7 @@ public class Client{
 			
 			rdthrd.start();
 			sndthrd.start();
+
 			
 		} catch (Exception e){
 			System.err.println("Error: " + e.getMessage());

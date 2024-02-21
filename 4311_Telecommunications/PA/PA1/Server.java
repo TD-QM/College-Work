@@ -43,7 +43,6 @@ class ClientThread implements Runnable{
 		try{
 			in = new DataInputStream(socket.getInputStream());
 			out = new DataOutputStream(socket.getOutputStream());
-			outputList.add(out);
 		} catch(Exception e){
 			System.err.println("Error Line 46: " + e.getMessage());
 		}
@@ -115,7 +114,10 @@ class ClientThread implements Runnable{
 			outputList.get(i).writeUTF("Server: Welcome " + username);
 		}
 		System.out.println("Server has accepted " + username + " into the group chat");
+		
+		out.writeUTF("Server: Welcome " + username);
 		userList.add(username);
+		outputList.add(out);
 	}
 	
 } // End Client Thread
