@@ -57,7 +57,7 @@ public class MKNguye4 extends Bot {
 	 * generator (see {@link java.util.Random}) begins with a seed of 0.
 	 */
 	public MKNguye4() {
-		super("My Chess Bot");
+		super("My 3rd Chess Bot");
 		this.random = new Random(0);
 	}
 

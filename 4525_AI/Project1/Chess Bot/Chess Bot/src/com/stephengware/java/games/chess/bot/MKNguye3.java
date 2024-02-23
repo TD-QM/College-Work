@@ -57,7 +57,7 @@ public class MKNguye3 extends Bot {
 	 * generator (see {@link java.util.Random}) begins with a seed of 0.
 	 */
 	public MKNguye3() {
-		super("My Chess Bot");
+		super("My 2nd Chess Bot");
 		this.random = new Random(0);
 	}
 
@@ -83,7 +83,14 @@ public class MKNguye3 extends Bot {
 			return root.next(new Pawn(Player.BLACK, 3, 6), new Pawn(Player.BLACK, 3, 4));
 		}
 		
-		Object[] minimaxReturn = minimax(root, root, 4);
+		Object[] minimaxReturn = minimax(root, root, 2);
+		
+		try {
+			minimaxReturn = minimax(root, root, 4);
+		} catch (Exception e) {
+			System.out.println("");
+		}
+		
 		System.out.println("\n MKNguye3 Turn #" + root.turn + ": " + (double)minimaxReturn[1]);
 		if(minimaxReturn[1] != null) {
 			return (State)minimaxReturn[0];

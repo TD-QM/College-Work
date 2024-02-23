@@ -29,14 +29,15 @@ public class Test {
 				//new Human(),
 				//new MKNguye2(), //4138499
 				//new MKNguye3(),
-				new MKNguye4(),
+				//new MKNguye4(),
+				new MKNguye5(),
 				//new Human(),
 				//new RandomBot(),
 				//new GreedyBot(),
 				//new NoviceBot(),
-				//new BeginnerBot(),
-				//new MKNguye3(),
-				new IntermediateBot(),
+				new BeginnerBot(),
+				//new MKNguye5(),
+				//new IntermediateBot(),
 		};
 		Tournament tournament = new Tournament(2, bots);
 		tournament.play();
