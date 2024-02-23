@@ -309,15 +309,15 @@ public class MKNguye5 extends Bot {
 					if (testedState.board.pieceAt(row, col) && testedState.board.getPieceAt(row, col) instanceof Pawn) {
 						if(testedState.board.getPieceAt(row, col).player == root.player && testedState.player == root.player) {
 							if(root.player == Player.WHITE) {
-								evaluation += Math.pow(1.35, row-2);
+								evaluation += Math.pow(1.7, row-2);
 							} else {
-								evaluation += Math.pow(1.35, 6-row);
+								evaluation += Math.pow(1.7, 6-row);
 							}
 						} else if(testedState.board.getPieceAt(row, col).player == root.player && testedState.player != root.player) {
 							if(testedState.player == Player.WHITE) {
-								evaluation -= Math.pow(1.35, row-2);
+								evaluation -= Math.pow(1.7, row-2);
 							} else {
-								evaluation -= Math.pow(1.35, 6-row);
+								evaluation -= Math.pow(1.7, 6-row);
 							}
 						}
 					}
@@ -340,13 +340,13 @@ public class MKNguye5 extends Bot {
 			} else {
 				evaluation -= 115;
 			}
-		} else if((evaluation > 1.5 && testedState.movesUntilDraw < 9)){
+		} else if((evaluation > 10 && testedState.movesUntilDraw < 9)){
 			if(testedState.player == root.player) {
 				evaluation -= 15;
 			} else {
 				evaluation += 15;
 			}
-		} else if((evaluation < -15 && testedState.movesUntilDraw < 9)){
+		} else if((evaluation < -1 && testedState.movesUntilDraw < 9)){
 			if(testedState.player == root.player) {
 				evaluation += 15;
 			} else {
