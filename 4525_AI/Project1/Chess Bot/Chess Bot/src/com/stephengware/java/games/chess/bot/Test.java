@@ -32,12 +32,12 @@ public class Test {
 				//new MKNguye4(),
 				new MKNguye5(),
 				//new Human(),
-				//new RandomBot(),
-				//new GreedyBot(),
-				//new NoviceBot(),
+				new RandomBot(),
+				new GreedyBot(),
+				new NoviceBot(),
 				new BeginnerBot(),
 				//new MKNguye5(),
-				//new IntermediateBot(),
+				new IntermediateBot(),
 		};
 		Tournament tournament = new Tournament(2, bots);
 		tournament.play();

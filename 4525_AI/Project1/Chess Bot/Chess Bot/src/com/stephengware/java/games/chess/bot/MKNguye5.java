@@ -69,18 +69,21 @@ public class MKNguye5 extends Bot {
 		// possible next states of the game. Make sure that we do not exceed
 		// the number of GameTree nodes that we are allowed to generate.
 		//Iterator<State> iterator = root.next().iterator();
-		
-		if (root.turn == 0 && root.player == Player.WHITE) {
-			return root.next(new Pawn(Player.WHITE, 4, 1), new Pawn(Player.WHITE, 4, 3));
-		} else if (root.turn == 1 && root.player == Player.WHITE) {
-			return root.next(new Knight(Player.WHITE, 1, 0), new Knight(Player.WHITE, 2, 2));
-//		} else if (root.turn == 0 && root.player == Player.BLACK) {
-//			return root.next(new Pawn(Player.BLACK, 3, 6), new Pawn(Player.BLACK, 3, 4));
-//		}
-		} else if (root.turn == 0 && root.player == Player.BLACK) {
-			return root.next(new Pawn(Player.BLACK, 4, 6), new Pawn(Player.BLACK, 4, 5));
-		} else if (root.turn == 1 && root.player == Player.BLACK) {
-			return root.next(new Pawn(Player.BLACK, 3, 6), new Pawn(Player.BLACK, 3, 4));
+		try {
+			if (root.turn == 0 && root.player == Player.WHITE) {
+				return root.next(new Pawn(Player.WHITE, 4, 1), new Pawn(Player.WHITE, 4, 3));
+			} else if (root.turn == 1 && root.player == Player.WHITE) {
+				return root.next(new Knight(Player.WHITE, 1, 0), new Knight(Player.WHITE, 2, 2));
+	//		} else if (root.turn == 0 && root.player == Player.BLACK) {
+	//			return root.next(new Pawn(Player.BLACK, 3, 6), new Pawn(Player.BLACK, 3, 4));
+	//		}
+			} else if (root.turn == 0 && root.player == Player.BLACK) {
+				return root.next(new Pawn(Player.BLACK, 4, 6), new Pawn(Player.BLACK, 4, 5));
+			} else if (root.turn == 1 && root.player == Player.BLACK) {
+				return root.next(new Pawn(Player.BLACK, 3, 6), new Pawn(Player.BLACK, 3, 4));
+			}
+		} catch (Exception e) {
+			
 		}
 		
 		
@@ -346,7 +349,7 @@ public class MKNguye5 extends Bot {
 			} else {
 				evaluation += 15;
 			}
-		} else if((evaluation < -1 && testedState.movesUntilDraw < 9)){
+		} else if((evaluation < -10 && testedState.movesUntilDraw < 9)){
 			if(testedState.player == root.player) {
 				evaluation += 15;
 			} else {
