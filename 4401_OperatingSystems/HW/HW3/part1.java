@@ -25,7 +25,7 @@ public class part1{
 					BufferedReader reader = new BufferedReader( new FileReader(file) );
 
 					String line = "";
-					String pattern = "(?<![a-zA-Z])[a-zA-Z]{" + j + "}(?![a-zA-Z])";	
+					String pattern = "(?<![a-zA-Z])[a-zA-Z]{" + j + "}(?![a-zA-Z])";
 					Pattern r = Pattern.compile(pattern);
 					Map<String, String> fileWords = Collections.synchronizedMap(new HashMap<String, String>());
 					
