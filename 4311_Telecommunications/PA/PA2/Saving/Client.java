@@ -82,7 +82,7 @@ class readThread implements Runnable{
 	}
 	
 	public void run(){
-		System.out.println("Read Thread created!");
+		//System.out.println("Read Thread created!");
 		while(true){
 			try{
 				String line = input.readUTF();

@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.CyclicBarrier;
 import java.io.*;
 import java.net.*;
 
@@ -44,19 +46,24 @@ class ClientThread implements Runnable{
 	private static ArrayList<String> userList = new ArrayList<String>();
 	private static ArrayList<DataOutputStream> outputList = new ArrayList<DataOutputStream>();
 	private static ArrayList<ArrayList<Card>> hands = new ArrayList<ArrayList<Card>>();
+	private static ArrayList<Card> discardPile = new ArrayList<Card>();
 	private static ArrayList<Boolean> skipped = new ArrayList<Boolean>();
+	private static CyclicBarrier barrier;
 	private static Deck deck;
+	private static boolean begin;
 	private Thread startThrd;
 	private static boolean complete = false;
+
+	private boolean reprint;
 	private boolean start;
-	private boolean startRound;
+	private static boolean startRound;
 
 	public ClientThread(Socket socket, boolean start){
 		try{
 			in = new DataInputStream(socket.getInputStream());
 			out = new DataOutputStream(socket.getOutputStream());
 		} catch(Exception e){
-			System.err.println("Error Line 46: " + e.getMessage());
+			System.err.println("Error Line 59: " + e.getMessage());
 		}
 		this.start = start;
 		if(start){
@@ -67,6 +74,7 @@ class ClientThread implements Runnable{
 		players++;
 		hands.add(new ArrayList<Card>());
 		skipped.add(false);
+		barrier = new CyclicBarrier(players);
 	}
 
 	
@@ -78,43 +86,56 @@ class ClientThread implements Runnable{
 			// Run the starting thread
 			// Used to both get the number of players and pause the game until all players have joined
 			startThrd = new Thread(new StartThread(in, out, start));
-			startThrd.run();
-			startThrd.join();	
+			startThrd.run();	
+			
+			//if(!start){
+				startThrd.join();
+			//}
 
 			writeAll("The game has officially begun");
 
-			// Drawing cards for all the players (13 per player)
-			for(int i = 0; i < players; i++){
-				for(int j = 0; j < 13; j++){
-					hands.get(i).add(deck.draw());
+			if(start){
+				// Drawing cards for all the players (13 per player)
+				for(int i = 0; i < players; i++){
+					for(int j = 0; j < 13; j++){
+						hands.get(i).add(deck.draw());
+					}
 				}
-			}
+				// Sort the order of the hands for clarity while playing
+				sortHands();
 
-			// Sort the order of the hands for clarity while playing
-			sortHands();
-
-			// In Hail/Thirteen, the player with the lowest value card (typically the Three of Spades) goes first
-			int minVal = hands.get(0).get(0).getValue();
-			turn = 0;
-			for(int i = 1; i < players; i++){
-				if(minVal > hands.get(i).get(0).getValue()){
-					turn = i;
+				// In Hail/Thirteen, the player with the lowest value card (typically the Three of Spades) goes first
+				int minVal = hands.get(0).get(0).getValue();
+				turn = 0;
+				for(int i = 1; i < players; i++){
+					if(minVal > hands.get(i).get(0).getValue()){
+						turn = i;
+					}
 				}
 			}
 
 
 			String line = "";
-			boolean reprint = true;
-			boolean begin = true;
+			reprint = true;
+			begin = true;
+			complete = false;
 			startRound = true;
+
+			System.out.println(username + " is just before the while loop");
 			while(!complete){
+
+				System.out.println(username + " entered the while loop");
+				
+				while(turn != userIndex){
+					barrier.await();
+				}
 
 				if(reprint){
 					printHands();
 					System.out.println(username + ": Printed Hands");
 					writeAll("\nIt is currently " + userList.get(turn) + "'s turn");
 					if(!startRound){
-						writeAll("Current hand to beat: " + deck.topDiscard().toString());
+						writeAll("Current hand to beat: " + discardPile.get(discardPile.size()-1).toString());
 					} else {
 						writeAll(userList.get(turn) + " can play anything");
 					}
@@ -156,7 +177,7 @@ class ClientThread implements Runnable{
 						if(handIndex == 99){
 							out.writeUTF("Skipped this round!");
 							skipped.set(userIndex, true);
-							turn = (turn + 1) % players;
+							updateTurn();
 							continue;
 						}
 
@@ -176,26 +197,36 @@ class ClientThread implements Runnable{
 						}
 
 						if(startRound){
-							deck.play(playedCard);
+							//deck.play(playedCard);
+							discardPile.add(playedCard);
+							writeAll("\033[H\033[2J");
 							writeAll(username + " has played a " + playedCard.toString());
+							System.out.println(username + " has played " + playedCard.toString() + " in the first round");
 							begin = false;
 							startRound = false;
+							hands.get(turn).remove(handIndex);
 							updateTurn();
+							reprint = true;
 							continue;
 						}
 
 						// Seeing if the card can actually beat the current card on top of the discard pile
-						if(playedCard.getValue() < deck.topDiscard().getValue()){
+						if(playedCard.getValue() < discardPile.get(discardPile.size()-1).getValue()){
 							out.writeUTF("That card doesn't beat the current one!");
 							continue;
 						}
 
 						// Played card does beat the current card
-						deck.play(playedCard);
+						//deck.play(playedCard);
+						discardPile.add(playedCard);
+						writeAll("\033[H\033[2J");
 						writeAll(username + " has played a " + playedCard.toString());
+						System.out.println(username + " has played " + playedCard.toString());
 						begin = false;
 						startRound = false;
+						hands.get(turn).remove(handIndex);
 						updateTurn();
+						reprint = true;
 
 
 					} catch (NumberFormatException e){
@@ -213,22 +244,34 @@ class ClientThread implements Runnable{
 
 			out.writeUTF("Server: Goodbye " + username);
 		} catch (Exception e) {
-			System.err.println("Error Line 85: " + e.getMessage());
+			System.err.println("Error Line 220: " + e.getMessage());
 		}
 	}
 
 	private void updateTurn(){
 		turn = (turn+1) % players;
 		while(skipped.get(turn)){
-			if(turn == userIndex){
-				startRound = true;
-				for(int i = 0; i < skipped.size(); i++){
-					skipped.set(i, false);
-				}
-				break;
-			}
 			turn = (turn+1) % players;
+		}
+
+
+		int everyone = 0;
+		for(int i = 0; i < skipped.size(); i++){
+			if(!skipped.get(i)){
+				everyone++;
+			}
+		}
+
+		if(everyone == 1){
 			startRound = true;
+			for(int i = 0; i < skipped.size(); i++){
+				skipped.set(i, false);
+			}
+			startRound = true;
+			reprint = true;
+			discardPile.clear();
+		} else {
+			startRound = false;
 		}
 	}
 
@@ -253,6 +296,8 @@ class ClientThread implements Runnable{
 	}
 
 	private void printHands() throws IOException{
+		//writeAll("\033[H\033[2J");
+		writeAll("--------------------------");
 		for(int i = 0; i < hands.size(); i++){
 			String hand = "Hand: \n";
 			for(int j = 0; j < hands.get(i).size(); j++){
@@ -261,6 +306,7 @@ class ClientThread implements Runnable{
 			hand += "[99] Skip this round\n";
 			outputList.get(i).writeUTF(hand);
 		}
+		writeAll("--------------------------");
 	}
 
 	private void writeAll(String str) throws IOException{
@@ -295,54 +341,68 @@ class ClientThread implements Runnable{
 
 		writeAll("Welcome, " + username + ", to the game.");
 	}
+
+	protected void changeBarrier (CyclicBarrier barrier){
+		this.barrier = barrier;
+	}
+
+
+
+
+
+
+	private class StartThread implements Runnable{
+		private DataInputStream in;
+		private DataOutputStream out;
+		private boolean start;
+		private static int players = 0;
+		private static int maxPlayers;
+	
+		public StartThread(DataInputStream in, DataOutputStream out, boolean start){
+			this.in = in;
+			this.out = out;
+			this.start = start;
+			players++;
+		}
+	
+		public void run(){
+			if(start){
+				try{
+					out.writeUTF("Server: How many players? [2-4]");
+	
+					while(true){
+						String line = in.readUTF();
+						try{
+							maxPlayers = Integer.parseInt(line);
+	
+							if(maxPlayers >= 2 && maxPlayers <= 4){
+								break;
+							}
+							out.writeUTF("Please put in a valid number [2-4]");
+						} catch (Exception NumberFormatException){
+							out.writeUTF("Invalid value, enter a parsable int");
+						}
+					}
+					changeBarrier(new CyclicBarrier(maxPlayers));
+					
+				} catch (Exception e){
+	
+				}
+			}
+	
+			try{
+				out.writeUTF("Waiting on other players...");
+			while(players < maxPlayers){ 
+				System.out.print("");
+			}
+	
+			} catch(Exception e) {
+	
+			}
+		}
+	
+	}
+	
 	
 } // End Client Thread
 
-class StartThread implements Runnable{
-	private DataInputStream in;
-	private DataOutputStream out;
-	private boolean start;
-	private static int players = 0;
-	private static int maxPlayers;
-
-	public StartThread(DataInputStream in, DataOutputStream out, boolean start){
-		this.in = in;
-		this.out = out;
-		this.start = start;
-		players++;
-	}
-
-	public void run(){
-		if(start){
-			try{
-				out.writeUTF("Server: How many players? [2-4]");
-
-				while(true){
-					String line = in.readUTF();
-					try{
-						maxPlayers = Integer.parseInt(line);
-
-						if(maxPlayers >= 2 && maxPlayers <= 4){
-							break;
-						}
-						out.writeUTF("Please put in a valid number [2-4]");
-					} catch (Exception NumberFormatException){
-						out.writeUTF("Invalid value, enter a parsable int");
-					}
-				}
-				
-			} catch (Exception e){
-
-			}
-		}
-
-		try{
-			out.writeUTF("Waiting on other players...");
-			while(players < maxPlayers){
-			}
-		} catch(Exception e) {
-
-		}
-	}
-
-}
