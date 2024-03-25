@@ -48,16 +48,18 @@ class sendThread implements Runnable{
 		//System.out.println("Send Thread created!");
 		while(true){
 			System.out.print("");
-			String line = input.nextLine();
+			String line = input.next();
+			System.out.println("You have said: " + line);
 			try{
 				output.writeUTF(line);
-				output.flush();
+				System.out.println("You have sent: " + line);
+				//output.flush();
 									
 				if(line.equals("Bye")){
 					break;
 				}
 			} catch (Exception e){
-				//System.err.println("Error Line 62: " + e.getMessage());
+				System.err.println("Error Line 62: " + e.getMessage());
 			}
 		}
 	}
