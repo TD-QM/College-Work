@@ -46,7 +46,7 @@ class ClientThread implements Runnable{
 	private static ArrayList<String> userList = new ArrayList<String>();
 	private static ArrayList<DataOutputStream> outputList = new ArrayList<DataOutputStream>();
 	private static ArrayList<ArrayList<Card>> hands = new ArrayList<ArrayList<Card>>();
-	private static ArrayList<Card> discardPile = new ArrayList<Card>();
+	private static ArrayList<ArrayList<Card>> discardPile = new ArrayList<ArrayList<Card>>();
 	private static ArrayList<Boolean> skipped = new ArrayList<Boolean>();
 	private static CyclicBarrier barrier;
 	private static Deck deck;
@@ -135,7 +135,8 @@ class ClientThread implements Runnable{
 					System.out.println(username + ": Printed Hands");
 					writeAll("\nIt is currently " + userList.get(turn) + "'s turn");
 					if(!startRound){
-						writeAll("Current hand to beat: " + discardPile.get(discardPile.size()-1).toString());
+						String writeout = "Current hand to beat: " + discardPile.get(discardPile.size()-1).toString();
+						writeAll(writeout);
 					} else {
 						writeAll(userList.get(turn) + " can play anything");
 					}
@@ -171,27 +172,48 @@ class ClientThread implements Runnable{
 
 					// try/catch block for seeing if the user inputted an actual int
 					try{
-						int handIndex = Integer.parseInt(line);
+						String[] input = line.split(" ");
+						System.out.println(username + " has directly input " + line);
+						System.out.print(username + " has input ");
+						for(String aaa : input){
+							System.out.print(aaa);
+						}
+						System.out.println("");
+
+
+						ArrayList<Integer> handIndex = new ArrayList<Integer>();
+						for(String index : input){
+							handIndex.add(Integer.parseInt(index));
+						}
 
 						// 99 is hardcoded to be a skip
-						if(handIndex == 99){
+						if(handIndex.get(0).equals(99)){
 							out.writeUTF("Skipped this round!");
 							skipped.set(userIndex, true);
 							updateTurn();
 							continue;
 						}
 
-						// Seeing if the user put in a valid card in their hand
-						if(handIndex < 0 || handIndex > hands.get(userIndex).size()){
-							out.writeUTF("That's not a valid input!");
-							continue;	
+
+						for(int i = 0; i < handIndex.size(); i++){
+							// Seeing if the user put in a valid card in their hand
+							if(handIndex.get(i) < 0 || handIndex.get(i) > hands.get(userIndex).size()){
+								out.writeUTF("That's not a valid input!");
+								continue;	
+							}
 						}
 
-						// Get the card the player played
-						Card playedCard = hands.get(userIndex).get(handIndex);
+						// Get the card(s) the player played
+						ArrayList<Card> playedCard = new ArrayList<Card>();
+						
+						for(int i = 0; i < handIndex.size(); i++){
+							playedCard.add(hands.get(turn).get(handIndex.get(i).intValue()));
+						}
+
+
 
 						// In Hail/Thirteen, the player who starts must include the lowest card in the first hand played
-						if(begin && handIndex != 0){
+						if(begin && !handIndex.contains(0)){
 							out.writeUTF("You must play the lowest value card when starting the game!");
 							continue;
 						}
@@ -204,15 +226,49 @@ class ClientThread implements Runnable{
 							System.out.println(username + " has played " + playedCard.toString() + " in the first round");
 							begin = false;
 							startRound = false;
-							hands.get(turn).remove(handIndex);
+
+							for(int i = handIndex.size()-1; i >= 0; i--){
+								System.out.println(username + ": Removed " + hands.get(turn).remove(handIndex.get(i).intValue()).toString());
+							}
+
 							updateTurn();
 							reprint = true;
 							continue;
 						}
 
+						if(handIndex.size() != discardPile.get(0).size()){
+							out.writeUTF("This sequence isn't the right size.");
+							continue;
+						}
+
+						if(handIndex.size() > 1){
+							boolean validSequence = true;
+							for(int i = 0; i < handIndex.size()-1; i++){
+								if(hands.get(userIndex).get(handIndex.get(i)).getValue()/10 - hands.get(userIndex).get(handIndex.get(i+1)).getValue()/10 != -1){
+									validSequence = false;
+									break;
+								}
+							}
+
+							boolean validOfAKind = true;
+							for(int i = 0; i < handIndex.size()-1; i++){
+								if(hands.get(userIndex).get(handIndex.get(i)).getValue()/10 != hands.get(userIndex).get(handIndex.get(i+1)).getValue()/10){
+									validSequence = false;
+									break;
+								}
+							}
+
+							if(!validSequence && !validOfAKind){
+								out.writeUTF("That isn't a sequence or duplicate!");
+								continue;
+							}
+						}
+
+						
+
 						// Seeing if the card can actually beat the current card on top of the discard pile
-						if(playedCard.getValue() < discardPile.get(discardPile.size()-1).getValue()){
-							out.writeUTF("That card doesn't beat the current one!");
+						if(playedCard.get(playedCard.size()-1).getValue() < discardPile.get(discardPile.size()-1).get(discardPile.get(discardPile.size()-1).size()-1).getValue()){
+							out.writeUTF("That card/collection doesn't beat the current one!");
 							continue;
 						}
 
@@ -220,11 +276,15 @@ class ClientThread implements Runnable{
 						//deck.play(playedCard);
 						discardPile.add(playedCard);
 						writeAll("\033[H\033[2J");
-						writeAll(username + " has played a " + playedCard.toString());
+						writeAll(username + " has played " + playedCard.toString());
 						System.out.println(username + " has played " + playedCard.toString());
 						begin = false;
 						startRound = false;
-						hands.get(turn).remove(handIndex);
+
+						for(int i = handIndex.size()-1; i >= 0; i--){
+							System.out.println(username + ": Removed " + hands.get(turn).remove(handIndex.get(i).intValue()).toString());
+						}
+
 						updateTurn();
 						reprint = true;
 

@@ -48,7 +48,7 @@ class sendThread implements Runnable{
 		//System.out.println("Send Thread created!");
 		while(true){
 			System.out.print("");
-			String line = input.next();
+			String line = input.nextLine();
 			System.out.println("You have said: " + line);
 			try{
 				output.writeUTF(line);
