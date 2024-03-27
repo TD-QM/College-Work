@@ -48,11 +48,11 @@ class sendThread implements Runnable{
 		//System.out.println("Send Thread created!");
 		while(true){
 			System.out.print("");
-			String line = input.next();
-			System.out.println("You have said: " + line);
+			String line = input.nextLine();
+			//System.out.println("You have said: " + line);
 			try{
 				output.writeUTF(line);
-				System.out.println("You have sent: " + line);
+				//System.out.println("You have sent: " + line);
 				//output.flush();
 									
 				if(line.equals("Bye")){
@@ -74,37 +74,37 @@ class readThread implements Runnable{
 	public readThread(DataInputStream input, Thread sndThrd){
 		this.input = input;
 		this.sndThrd = sndThrd;
-		buffer = new String[30];
-		for(int i = 0; i < 30; i++){
-			buffer[i] = "";
-		}
-		bufferStartIndex = 0;
+		// buffer = new String[30];
+		// for(int i = 0; i < 30; i++){
+		// 	buffer[i] = "";
+		// }
+		// bufferStartIndex = 0;
 	}
 	
 	public void run(){
-		System.out.println("Read Thread created!");
+		//System.out.println("Read Thread created!");
 		while(true){
 			try{
 				String line = input.readUTF();
 
-				buffer[bufferStartIndex] = line;
+				// buffer[bufferStartIndex] = line;
 
-				System.out.print("\033[H\033[2J");
-				System.out.flush();
+				// System.out.print("\033[H\033[2J");
+				// System.out.flush();
 
-				int i = bufferStartIndex+1;
-				while(i != bufferStartIndex){
-					if(i >= 29){
-						i = 0;
-					} else {
-						i++;
-					}
-					System.out.println(buffer[i]);	
-				}
+				// int i = bufferStartIndex+1;
+				// while(i != bufferStartIndex){
+				// 	if(i >= 29){
+				// 		i = 0;
+				// 	} else {
+				// 		i++;
+				// 	}
+				// 	System.out.println(buffer[i]);	
+				// }
 
-				bufferStartIndex = (bufferStartIndex+1) % 30;
+				// bufferStartIndex = (bufferStartIndex+1) % 30;
 
-				//System.out.println(line);
+				System.out.println(line);
 				
 				if(!sndThrd.isAlive()){
 					break;
