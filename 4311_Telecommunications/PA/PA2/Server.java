@@ -144,7 +144,7 @@ class ClientThread implements Runnable{
 				// Prints game info (hands, current player's turn, etc.)
 				if(reprint){
 					printHands();
-					System.out.println(username + ": Printed Hands");
+					//System.out.println(username + ": Printed Hands");
 
 					for(int i = 0; i < outputList.size(); i++){
 						if(i == turn){
@@ -161,7 +161,7 @@ class ClientThread implements Runnable{
 					} else {
 						writeAll(userList.get(turn) + " can play anything");
 					}
-					System.out.println(username + ": Printed Status");
+					//System.out.println(username + ": Printed Status");
 					reprint = false;
 				}
 
@@ -196,10 +196,10 @@ class ClientThread implements Runnable{
 						String[] input = line.split(" ");
 						//System.out.println(username + ": directly input " + line);
 						//System.out.print(username + ": input ");
-						for(String aaa : input){
-							System.out.print(aaa);
-						}
-						System.out.println("");
+						// for(String aaa : input){
+						// 	System.out.print(aaa);
+						// }
+						// System.out.println("");
 
 
 						ArrayList<Integer> handIndex = new ArrayList<Integer>();
@@ -210,6 +210,7 @@ class ClientThread implements Runnable{
 						// 99 is hardcoded to be a skip
 						if(handIndex.get(0).equals(99)){
 							writeAll(username + " skipped this round!");
+							System.out.println(username + ": Skipped");
 							skipped.set(userIndex, true);
 							updateTurn();
 							continue;
@@ -229,7 +230,7 @@ class ClientThread implements Runnable{
 						for(int i = 0; i < handIndex.size(); i++){
 							playedCard.add(hands.get(turn).get(handIndex.get(i).intValue()));
 						}
-						System.out.println(username + ": attemped to play " + playedCard.toString());
+						//System.out.println(username + ": attemped to play " + playedCard.toString());
 
 
 
@@ -250,14 +251,14 @@ class ClientThread implements Runnable{
 							}
 
 							discardPile.add(playedCard);
-							writeAll("\033[H\033[2J");
+							clearTerminal();
 							writeAll(username + " has played " + playedCard.toString());
-							System.out.println(username + " has played " + playedCard.toString() + " in the first round");
+							System.out.println(username + ": Played " + playedCard.toString() + " in the first round");
 							begin = false;
 							startRound = false;
 
 							for(int i = handIndex.size()-1; i >= 0; i--){
-								System.out.println(username + ": Removed " + hands.get(turn).remove(handIndex.get(i).intValue()).toString());
+								hands.get(turn).remove(handIndex.get(i).intValue());
 							}
 
 							updateTurn();
@@ -305,11 +306,12 @@ class ClientThread implements Runnable{
 
 						if(discardPile.get(discardPile.size()-1).get(discardPile.get(discardPile.size()-1).size()-1).getValue()/10 == 13 && checkChop(playedCard)){
 							discardPile.add(playedCard);
-							writeAll("\033[H\033[2J");
+
+							clearTerminal();
 							writeAll(username + " has played " + playedCard.toString());
-							System.out.println(username + " has played " + playedCard.toString());
+							System.out.println(username + ": Played " + playedCard.toString());
 							for(int i = handIndex.size()-1; i >= 0; i--){
-								System.out.println(username + ": Removed " + hands.get(turn).remove(handIndex.get(i).intValue()).toString());
+								hands.get(turn).remove(handIndex.get(i).intValue());
 							}
 							updateTurn();
 							continue;
@@ -325,13 +327,13 @@ class ClientThread implements Runnable{
 									continue;
 								}
 								discardPile.add(playedCard);
-								writeAll("\033[H\033[2J");
+								clearTerminal();
 								writeAll(username + " has played " + playedCard.toString());
-								System.out.println(username + " has played " + playedCard.toString());
+								System.out.println(username + ": Played " + playedCard.toString());
 								// begin = false;
 								// startRound = false;
 								for(int i = handIndex.size()-1; i >= 0; i--){
-									System.out.println(username + ": Removed " + hands.get(turn).remove(handIndex.get(i).intValue()).toString());
+									hands.get(turn).remove(handIndex.get(i).intValue());
 								}
 								updateTurn();
 								continue;
@@ -344,13 +346,13 @@ class ClientThread implements Runnable{
 									continue;
 								}
 								discardPile.add(playedCard);
-								writeAll("\033[H\033[2J");
+								clearTerminal();
 								writeAll(username + " has played " + playedCard.toString());
-								System.out.println(username + " has played " + playedCard.toString());
+								System.out.println(username + ": Played " + playedCard.toString());
 								// begin = false;
 								// startRound = false;
 								for(int i = handIndex.size()-1; i >= 0; i--){
-									System.out.println(username + ": Removed " + hands.get(turn).remove(handIndex.get(i).intValue()).toString());
+									hands.get(turn).remove(handIndex.get(i).intValue());
 								}
 								updateTurn();
 								continue;
@@ -368,13 +370,13 @@ class ClientThread implements Runnable{
 
 						// Played card does beat the current card
 						discardPile.add(playedCard);
-						writeAll("\033[H\033[2J");
+						clearTerminal();
 						writeAll(username + " has played " + playedCard.toString());
-						System.out.println(username + " has played " + playedCard.toString());
+						System.out.println(username + ": Played " + playedCard.toString());
 						// begin = false;
 						// startRound = false;
 						for(int i = handIndex.size()-1; i >= 0; i--){
-							System.out.println(username + ": Removed " + hands.get(turn).remove(handIndex.get(i).intValue()).toString());
+							hands.get(turn).remove(handIndex.get(i).intValue());
 						}
 						updateTurn();
 
@@ -511,7 +513,6 @@ class ClientThread implements Runnable{
 
 	// Prints the hands to everyone in the game
 	private void printHands() throws IOException{
-		//writeAll("\033[H\033[2J");
 		writeAll("--------------------------");
 		for(int i = 0; i < hands.size(); i++){
 			String hand = "Hand: \n";
@@ -528,6 +529,12 @@ class ClientThread implements Runnable{
 	private void writeAll(String str) throws IOException{
 		for(int i = 0; i < outputList.size(); i++){
 			outputList.get(i).writeUTF(str);
+		}
+	}
+
+	private void clearTerminal() throws IOException{
+		for(int i = 0; i < outputList.size(); i++){
+			outputList.get(i).writeUTF("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 		}
 	}
 	
