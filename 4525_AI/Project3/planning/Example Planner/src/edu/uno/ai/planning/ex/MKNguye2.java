@@ -20,11 +20,11 @@ public class MKNguye2 extends StateSpacePlanner {
 	 * Refactor > Rename.
 	 */
 	public MKNguye2() {
-		super("Example");
+		super("My very cool planner");
 	}
 
 	@Override
 	protected StateSpaceSearch makeStateSpaceSearch(StateSpaceProblem problem, SearchBudget budget) {
-		return new BreadthFirstSearch(problem, budget);
+		return new HeuristicSearch(problem, budget);
 	}
 }

@@ -20,12 +20,12 @@ import edu.uno.ai.planning.pop.PartialOrderPlanner;
 public class Test {
 	
 	private static final Planner<?>[] PLANNERS = new Planner[] {
-		new MKNguye2(),
-		new BreadthFirstSearchPlanner(),
-		new PartialOrderPlanner(),
-		new GraphPlan(),
-		new BlackBox(),
-		new HeuristicSearchPlanner()
+		new MKNguye2(),						// 24
+		//new BreadthFirstSearchPlanner(),	// 14
+		//new PartialOrderPlanner(),		// 17
+		//new GraphPlan(),					// 19
+		//new BlackBox(),					// 15
+		//new HeuristicSearchPlanner()		// 24
 	};
 
 	private static final String[] DOMAINS = new String[] {
