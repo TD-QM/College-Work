@@ -389,19 +389,77 @@ public class HW5{ //don't rename
 		int sstfMovements = 0;
 		
 		//ToDo: add your code to calculate @sstfMovements
-		int[] myRequests = requests.clone();
-		boolean right = (125 < start);
-
-		for(int i = 0; i < myRequests.length-1; i++){
-			for(int j = i+1; j < myRequests.length; j++){
-				if(myRequests[i] > myRequests[j]){
-					int temp = myRequests[i];
-					myRequests[i] = myRequests[j];
-					myRequests[j] = temp;
+		// Making a sorted linked list for all of the values in request
+		LinkedList<Integer> myRequests = new LinkedList<Integer>();
+		for(int i = 0; i < requests.length; i++){
+			myRequests.add(requests[i]);
+		}
+		for(int i = 0; i < myRequests.size()-1; i++){
+			for(int j = i+1; j < myRequests.size(); j++){
+				if(myRequests.get(i) > myRequests.get(j)){
+					Integer temp = myRequests.get(i);
+					myRequests.set(i, myRequests.get(j));
+					myRequests.set(j, temp);
 				}
 			}
 		}
-		
+
+		// Determining starting point
+		Integer head = start;
+		int index = 0;
+		if(head < myRequests.get(0)){
+			sstfMovements += Math.abs(head - myRequests.get(0));
+			index = 0;
+		} else if(head > myRequests.get(myRequests.size()-1)){
+			sstfMovements += Math.abs(head - myRequests.get(myRequests.size()-1));
+			index = myRequests.size()-1;
+		} else {
+			for(int i = 0; i < myRequests.size(); i++){
+				if(myRequests.get(i) > head){
+					if(Math.abs(head - myRequests.get(i-1)) > Math.abs(head - myRequests.get(i))){
+						sstfMovements += Math.abs(head - myRequests.get(i));
+						index = i;
+						break;
+					} else {
+						sstfMovements += Math.abs(head - myRequests.get(i-1));
+						index = i-1;
+						break;
+					}
+				}
+			}
+		}
+
+		// Actual algorithm
+		// -/+ 99999999 represent negative and positive infinity respectively. Basically a way of saying that there isn't a request before or after respec	tively
+		Integer before = -99999999;
+		Integer after = 99999999;
+		while(myRequests.size() > 1){
+			head = myRequests.get(index);
+
+			if(index < myRequests.size()-1){
+				after = myRequests.get(index+1);
+			} else {
+				after = 99999999;
+			}
+
+			if(index > 0){
+				before = myRequests.get(index-1);
+			} else {
+				before = -99999999;
+			}
+
+			if(Math.abs(head - before) > Math.abs(head - after)){
+				sstfMovements += Math.abs(head - after);
+				myRequests.remove(index);
+				continue;
+			} else {
+				sstfMovements += Math.abs(head - before);
+				myRequests.remove(index);
+				index--;
+				continue;
+			}
+		}
+
 		System.out.println(String.format("\tSSTF Movements: %s", sstfMovements));
 	}
 
