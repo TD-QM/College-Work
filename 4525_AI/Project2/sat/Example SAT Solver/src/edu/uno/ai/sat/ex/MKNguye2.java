@@ -1,6 +1,8 @@
 package edu.uno.ai.sat.ex;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import edu.uno.ai.logic.Atom;
@@ -184,25 +186,40 @@ public class MKNguye2 extends Solver {
 	private Object[] unitClause(Assignment assignment) {
 		Object[] returnVal = new Object[2];
 		returnVal[0] = false;
+		HashMap<Literal, Integer> litCount = new HashMap<Literal, Integer>();
+		
 		for(Clause clause : assignment.problem.clauses) {
 			if(assignment.getValue(clause) == Value.UNKNOWN && assignment.countUnknownLiterals(clause) == 1) {
 				for(Literal lit : clause.literals) {
 					if(assignment.getValue(lit) == Value.UNKNOWN) {
 						returnVal[0] = true;
-						returnVal[1] = lit;
-						return returnVal;
+						litCount.putIfAbsent(lit, 0);
+						litCount.replace(lit, litCount.get(lit)+1);
 					}
 				}
 			}
 		}
+		
+		int max = 0;
+		returnVal[1] = null;
+		for(Literal lit : litCount.keySet()) {
+			if(litCount.get(lit) > max) {
+				returnVal[1] = lit;
+			}
+		}
+		
+			
 		return returnVal;
 	}
 	// Pure symbols
+	// IN PROGRESS: Adding a heuristic to the pure symbol
 	private Object[] pureSymbol(Assignment assignment) {
 		Object[] returnVal = new Object[3];
 		returnVal[0] = false;
 		boolean pure;
 		boolean valence = true;
+		HashMap<Literal, Integer> litCount = new HashMap<Literal, Integer>();
+		
 		for(Variable var : assignment.problem.variables) {
 			if(assignment.getValue(var) == Value.UNKNOWN) {
 				pure = true;
@@ -224,6 +241,14 @@ public class MKNguye2 extends Solver {
 					returnVal[2] = var;
 					return returnVal;
 				}
+			}
+		}
+		
+		int max = 0;
+		returnVal[1] = null;
+		for(Literal lit : litCount.keySet()) {
+			if(litCount.get(lit) > max) {
+				returnVal[1] = lit;
 			}
 		}
 		
