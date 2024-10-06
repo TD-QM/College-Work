@@ -1,0 +1,60 @@
+Foremost version 1.5.7 by Jesse Kornblum, Kris Kendall, and Nick Mikus
+Audit File
+
+Foremost started at Fri Oct  4 19:34:08 2024
+Invocation: foremost -t jpg,png,zip,pdf,avi,gif -i 4623-lab1.64M.dd -v 
+Output directory: /home/bummie/Source/College-Work/4623_DigitalForensics/Lab1/output
+Configuration file: /etc/foremost.conf
+------------------------------------------------------------------
+File: 4623-lab1.64M.dd
+Start: Fri Oct  4 19:34:08 2024
+Length: 64 MB (67108864 bytes)
+ 
+Num	 Name (bs=512)	       Size	 File Offset	 Comment 
+
+0:	00008544.jpg 	     141 KB 	    4374528 	 
+1:	00008928.jpg 	      35 KB 	    4571136 	 
+2:	00009128.jpg 	     100 KB 	    4673536 	 
+3:	00009465.jpg 	      70 KB 	    4846204 	 
+4:	00009648.jpg 	     137 KB 	    4939776 	 
+5:	00010032.jpg 	      69 KB 	    5136384 	 
+6:	00010172.jpg 	       3 KB 	    5208428 	 
+7:	00010288.jpg 	      76 KB 	    5267456 	 
+8:	00010448.jpg 	      15 KB 	    5349376 	 
+9:	00010576.jpg 	      43 KB 	    5414912 	 
+10:	00010792.jpg 	      27 KB 	    5525504 	 
+11:	00024689.jpg 	       9 KB 	   12641168 	 
+12:	00032113.jpg 	       9 KB 	   16442256 	 
+13:	00065956.jpg 	      67 KB 	   33769472 	 
+14:	00066092.jpg 	      71 KB 	   33839104 	 
+15:	00066236.jpg 	      35 KB 	   33912832 	 
+16:	00066308.jpg 	     196 KB 	   33949696 	 
+17:	00066704.jpg 	      36 KB 	   34152448 	 
+18:	00066780.jpg 	      26 KB 	   34191360 	 
+19:	00066836.jpg 	     257 KB 	   34220032 	 
+20:	00067352.jpg 	      72 KB 	   34484224 	 
+21:	00067500.jpg 	     879 KB 	   34560000 	 
+22:	00069260.jpg 	      12 KB 	   35461120 	 
+23:	00069288.jpg 	      15 KB 	   35475456 	 
+24:	00069320.jpg 	      43 KB 	   35491840 	 
+25:	00069408.jpg 	      27 KB 	   35536896 	 
+26:	00002048.png 	     138 KB 	    1048576 	  (1205 x 304)
+27:	00009464.pdf 	       7 MB 	    4845568 	 
+28:	00008312.gif 	       6 KB 	    4255744 	  (1205 x 304)
+29:	00010480.gif 	      30 KB 	    5365760 	  (1205 x 304)
+30:	00010848.gif 	      30 KB 	    5554176 	  (1205 x 304)
+31:	00123520.gif 	       6 KB 	   63242240 	  (1205 x 304)
+32:	00123624.gif 	      30 KB 	   63295488 	  (1205 x 304)
+33:	00123720.gif 	      30 KB 	   63344640 	  (1205 x 304)
+34:	00130960.gif 	      30 KB 	   67051520 	  (1205 x 304)
+Finish: Fri Oct  4 19:34:08 2024
+
+35 FILES EXTRACTED
+	
+jpg:= 26
+png:= 1
+pdf:= 1
+gif:= 7
+------------------------------------------------------------------
+
+Foremost finished at Fri Oct  4 19:34:08 2024

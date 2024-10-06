@@ -1,0 +1,21 @@
+Foremost version 1.5.7 by Jesse Kornblum, Kris Kendall, and Nick Mikus
+Audit File
+
+Foremost started at Fri Oct  4 16:07:46 2024
+Invocation: foremost -b 1 -t png -o pngoutput -i 4623-lab1.64M.dd 
+Output directory: /home/bummie/Source/College-Work/4623_DigitalForensics/Lab1/pngoutput
+Configuration file: /etc/foremost.conf
+------------------------------------------------------------------
+File: 4623-lab1.64M.dd
+Start: Fri Oct  4 16:07:46 2024
+Length: 64 MB (67108864 bytes)
+ 
+Num	 Name (bs=1)	       Size	 File Offset	 Comment 
+
+Finish: Fri Oct  4 16:07:46 2024
+
+0 FILES EXTRACTED
+	
+------------------------------------------------------------------
+
+Foremost finished at Fri Oct  4 16:07:46 2024
